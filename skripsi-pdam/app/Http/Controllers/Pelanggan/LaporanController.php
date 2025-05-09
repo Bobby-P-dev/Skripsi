@@ -9,11 +9,6 @@ use DB;
 use Illuminate\Support\Facades\Auth;
 class LaporanController extends Controller
 {
-    public function index()
-    {
-        return view('laporan.index');
-    }
-
     public function create()
     {
 

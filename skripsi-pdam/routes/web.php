@@ -14,7 +14,13 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+//penguna
+Route::get('/laporan', [LaporanController::class, 'create'])->name('laporan.index');
 Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store');
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
