@@ -34,4 +34,9 @@ class Laporan_Model extends Model
         return $this->belongsTo(Pengguna_Model::class, 'pelanggan_id', 'pengguna_id');
     }
 
+    public function scopeMenungggu($query)
+    {
+        return $query->where('status', 'Menunggu');
+    }
+
 }
