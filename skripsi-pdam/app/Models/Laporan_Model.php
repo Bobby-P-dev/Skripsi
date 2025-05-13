@@ -18,10 +18,11 @@ class Laporan_Model extends Model
         'lokasi',
         'tingkat_urgensi',
         'status',
+        'foto_url'
     ];
     protected $table = 'laporan';
-    const CREATED_AT = 'creation_date';
-    const UPDATED_AT = 'updated_date';
+    const CREATED_AT = 'created_at';
+    const UPDATED_AT = 'updated_at';
     protected $primaryKey = 'laporan_uuid';
 
     public function admin()

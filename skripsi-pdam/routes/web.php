@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LaporanAdminController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -16,11 +17,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 //penguna
+Route::get('/laporan/home', [LaporanController::class, 'index'])->name('laporan.home');
 Route::get('/laporan', [LaporanController::class, 'create'])->name('laporan.index');
 Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store');
+Route::Get('/laporan/show/update{id}', [LaporanController::class, 'showUpdate'])->name('laporan.showUpdate');
+Route::put('/laporan/update/{id}', [LaporanController::class, 'update'])->name('laporan.update');
+Route::get('/laporan/show/delete/{id}', [LaporanController::class, 'showDelete'])->name('laporan.delete');
+Route::delete('/laporan/delete/{id}', [LaporanController::class, 'delete'])->name('laporan.delete');
 
 
 
+//admin
+Route::get('/laporan/home/admin', [LaporanAdminController::class, 'index'])->name('laporan.admin');
+Route::get('/laporan/validate/admin', [LaporanAdminController::class, 'accLaporan'])->name('laporan.show');
+Route::post('/laporan/validate/admin', [LaporanAdminController::class, 'accLaporan'])->name('laporan.acc');
+
+//dll
 Route::get('/', function () {
     return view('welcome');
 });
@@ -35,4 +47,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

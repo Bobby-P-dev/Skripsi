@@ -25,13 +25,16 @@ class Pengguna_Model extends Authenticatable
     protected $primaryKey = 'pengguna_id';
 
 
-    public function laporan(){
+    public function laporan()
+    {
         return $this->hasMany(Laporan_Model::class, 'pengguna_id', 'pengguna_id');
     }
-    public function penugasan(){
+    public function penugasan()
+    {
         return $this->hasMany(Penugasan_Model::class, 'pengguna_id', 'pengguna_id');
     }
-    public function dokumentasi(){
+    public function dokumentasi()
+    {
         return $this->hasMany(Dokumentasi_Model::class, 'pengguna_id', 'pengguna_id');
     }
 }

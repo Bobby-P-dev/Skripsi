@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('judul');
             $table->text('deskripsi');
             $table->text('lokasi');
+            $table->string('foto_url')->nullable();
             $table->enum('tingkat_urgensi', ['rendah', 'sedang', 'tinggi'])->index();
             $table->enum('status', ['tertunda', 'ditugaskan', 'berlangsung', 'selesai'])
                   ->default('tertunda')
