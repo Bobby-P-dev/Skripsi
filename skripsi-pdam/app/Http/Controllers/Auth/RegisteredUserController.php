@@ -35,12 +35,12 @@ class RegisteredUserController extends Controller
             'nama' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . Pengguna_Model::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'no_telpon' => ['required', 'string', 'max:15'],
+            'no_telepon' => ['required', 'string', 'max:15'],
             'alamat' => ['required', 'string', 'max:255'],
             'peran' => ['required', 'in:admin,teknisi,pelanggan'],
             'foto_profil' => ['required', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ]);
-
+        // dd($request);
         if ($request->hasFile('foto_profil')) {
             try {
                 $uploadResult = Cloudinary::upload($request->file('foto_profil')->getRealPath(), [
@@ -59,14 +59,14 @@ class RegisteredUserController extends Controller
             'nama' => $request->nama,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'no_telpon' => $request->no_telpon,
+            'no_telepon' => $request->no_telepon,
             'alamat' => $request->alamat,
             'peran' => $request->peran ?? 'pelanggan',
             'foto_profil' => $pathResult,
         ];
 
 
-            $user = Pengguna_Model::create($userData);
+        $user = Pengguna_Model::create($userData);
 
         event(new Registered($user));
         Auth::login($user);

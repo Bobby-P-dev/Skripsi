@@ -1,52 +1,83 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+
+<body>
+    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
         @csrf
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+        <!-- Start -->
+        <div class="grid gap-6 mb-6 md:grid-cols-2">
+            <div>
+                <label for="nama">Nama</label>
+                <input type="text" id="nama" name="nama" required />
+                @error('nama') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <div>
+                <label for="no_telepon">Nomor Telepon</label>
+                <input type="text" id="no_telepon" name="no_telepon" required />
+                @error('no_telepon') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <div>
+                <label for="alamat">Alamat</label>
+                <input type="text" id="alamat" name="alamat" required />
+                @error('alamat') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            </div>
+
+            <div>
+                <label for="peran">Peran</label>
+                <select id="peran" name="peran" required>
+                    <option value="">Pilih peran</option>
+                    <option value="admin" {{ old('peran') == 'admin' ? 'selected' : '' }}>Admin</option>
+                    <option value="teknisi" {{ old('peran') == 'teknisi' ? 'selected' : '' }}>Teknisi</option>
+                    <option value="pelanggan" {{ old('peran') == 'pelanggan' ? 'selected' : '' }}>Pelanggan</option>
+                </select>
+                @error('peran') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+            </div>
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+        <div class="mb-6">
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" required />
+            @error('email') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+        <div class="mb-6">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required />
+            @error('password') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
         </div>
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
+        <div class="mb-6">
+            <label for="password_confirmation">Confirm Password</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" required />
         </div>
+
+        <div class="flex items-center justify-center w-full mb-6">
+            <label for="foto_profil" class="cursor-pointer">
+                <p class="text-sm text-gray-500">Upload Foto Profil</p>
+                <input id="foto_profil" name="foto_profil" type="file" accept="image/*" class="hidden" required />
+            </label>
+            @error('foto_profil') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+        </div>
+
+
+        <button type="submit" class="btn btn-primary w-full">Submit</button>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+            <a class="text-sm text-blue-600" href="{{ route('login') }}">
+                {{ __('Sudah punya akun? Login') }}
             </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
         </div>
     </form>
-</x-guest-layout>
+</body>
+
+</html>
