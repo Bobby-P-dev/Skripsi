@@ -13,9 +13,9 @@
         <x-sidebar />
         <div class="flex-1 flex flex-col">
             <x-header />
-            <div class="flex-1 overflow-y-auto p-6 bg-gray-50">
+            <main class="flex-1 overflow-y-auto p-8 bg-gray-50 min-h-screen">
                 {{ $slot }}
-            </div>
+            </main>
         </div>
     </div>
 </body>
