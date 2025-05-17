@@ -11,9 +11,9 @@
 <body class="bg-white h-screen overflow-hidden">
     <div class="flex h-screen">
         <x-sidebar />
-        <div class="flex-1 flex flex-col">
+        <div class="flex flex-col flex-1">
             <x-header />
-            <main class="flex-1 overflow-y-auto p-8 bg-gray-50 min-h-screen">
+            <main class="overflow-y-auto bg-gray-50 md:px-8 md:py-6">
                 {{ $slot }}
             </main>
         </div>
