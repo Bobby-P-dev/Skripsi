@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\LaporanAdminController;
+use App\Http\Controllers\admin\LaporanAdminController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -17,9 +17,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 //penguna
+Route::get('/laporan', [LaporanController::class, 'getLaporan'])->name('laporan.index');
 Route::get('/laporan/home', [LaporanController::class, 'index'])->name('laporan.home');
-Route::get('/laporan', [LaporanController::class, 'create'])->name('laporan.index');
-Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store');
+// Route::get('/laporan', [LaporanController::class, 'create'])->name('laporan.index');
+Route::post('/laporan', [LaporanController::class, 'store'])
+    ->name('laporan.store')
+    ->middleware('auth');
+
+
 Route::Get('/laporan/show/update{id}', [LaporanController::class, 'showUpdate'])->name('laporan.showUpdate');
 Route::put('/laporan/update/{id}', [LaporanController::class, 'update'])->name('laporan.update');
 Route::get('/laporan/show/delete/{id}', [LaporanController::class, 'showDelete'])->name('laporan.delete');
@@ -38,7 +43,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('layouts.home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {

@@ -19,24 +19,14 @@ class LaporanCreateRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-    public function rules(): array
+    public function rules()
     {
         return [
-            'Pelanggan_id' => ['required', 'integer'],
-            'Admin_id' => ['required', 'integer'],
-            'Judul' => ['required', 'string', 'max:255'],
-            'Deskripsi' => ['required', 'string'],
-            'Lokasi' => ['required', 'string', 'max:255'],
-            'tingkat_urgensi' => ['required', 'string', 'in:rendah,sedang,tinggi'],
-            'Status' => ['required', 'string', 'in:pending,proses,selesai'],
+            'judul' => 'required|string|max:255',
+            'deskripsi' => 'required|string',
+            'lokasi' => 'required|string|max:255',
+            'tingkat_urgensi' => 'required|in:rendah,sedang,tinggi',
+            'foto_url' => 'required|image|mimes:jpeg,png,jpg|max:5120',
         ];
     }
-    // 'tertunda', 'ditugaskan', 'berlangsung', 'selesai'
-    protected function prepareForValidation(): void
-    {
-        $this->merge([
-            'Status' => $this->Status ?? 'pending',
-        ]);
-    }
 }
-

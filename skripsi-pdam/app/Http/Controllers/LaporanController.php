@@ -4,12 +4,27 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\LaporanCreateRequest;
 use App\Models\Laporan_Model;
-use App\Models\Pengguna_Model;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use DB;
 use Illuminate\Support\Facades\Auth;
+
 class LaporanController extends Controller
 {
+    public function getLaporan()
+    {
+        if (!Auth::check()) {
+            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
+        }
+
+        $laporans = Laporan_Model::where('pelanggan_id', Auth::id())->get();
+
+        // Ambil URL gambar Cloudinary untuk setiap laporan
+        foreach ($laporans as $laporan) {
+            $laporan->cloudinary_image = $laporan->foto_url;
+        }
+
+        return view('components.laporan', compact('laporans'));
+    }
 
     public function index()
     {
@@ -17,7 +32,7 @@ class LaporanController extends Controller
             return redirect()->route('login')->withErrors(['login' => 'You must be logged in to view this page.']);
         }
         $laporan = Laporan_Model::where('pelanggan_id', Auth::id())->get();
-        return view('laporan.index', compact('laporan'));
+        return view('laporan.index', \compact('laporan'));
     }
 
     public function create()
@@ -27,32 +42,32 @@ class LaporanController extends Controller
 
     public function store(LaporanCreateRequest $request)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->withErrors(['login' => 'You must be logged in to create a report.']);
-        }
         DB::beginTransaction();
 
-        if ($request->hasFile('foto_url')) {
-            try {
-                $uploadFile = Cloudinary::upload($request->file('foto_url')->getRealPath(), [
-                    'folder' => 'laporan',
-                ])->getSecurePath();
-                Laporan_Model::create([
-                    'pelanggan_id' => Auth::id(),
-                    'judul' => $request['judul'],
-                    'deskripsi' => $request['deskripsi'],
-                    'lokasi' => $request['lokasi'],
-                    'foto_url' => $uploadFile,
-                    'tingkat_urgensi' => $request['tingkat_urgensi'],
-                    'status' => 'pending',
-                ]);
-                DB::commit();
-
-                return redirect()->route('laporan.index')->with('success', 'Laporan created successfully.');
-            } catch (\Exception $e) {
-                DB::rollBack();
-                return redirect()->back()->withErrors(['error' => 'Failed to create laporan: ' . $e->getMessage()]);
+        try {
+            if (!$request->hasFile('foto_url')) {
+                throw new \Exception('File foto wajib diupload.');
             }
+
+            $uploadFile = Cloudinary::upload($request->file('foto_url')->getRealPath(), [
+                'folder' => 'laporan',
+            ])->getSecurePath();
+
+            Laporan_Model::create([
+                'pelanggan_id' => Auth::id(),
+                'judul' => $request->judul,
+                'deskripsi' => $request->deskripsi,
+                'lokasi' => $request->lokasi,
+                'foto_url' => $uploadFile,
+                'tingkat_urgensi' => $request->tingkat_urgensi,
+                'status' => 'pending',
+            ]);
+
+            DB::commit();
+            return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dibuat.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Gagal membuat laporan: ' . $e->getMessage()]);
         }
     }
     public function showUpdate($id)
@@ -107,5 +122,4 @@ class LaporanController extends Controller
             return redirect()->back()->withErrors(['error' => 'Failed to delete laporan: ' . $e->getMessage()]);
         }
     }
-
 }
