@@ -23,7 +23,7 @@ class LaporanController extends Controller
             $laporan->cloudinary_image = $laporan->foto_url;
         }
 
-        return view('components.laporan', compact('laporans'));
+        return view('laporan.index', compact('laporans'));
     }
 
     public function index()

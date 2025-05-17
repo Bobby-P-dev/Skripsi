@@ -9,9 +9,11 @@
 </head>
 
 <body>
-    <div style="min-height: 100vh; background: url('{{ asset('images/tirta-bg.jpeg') }}') no-repeat center center; background-size: cover;" class="flex flex-row sm:justify-center items-center sm:pt-0">
-        <div
-            class="sm:max-md flex flex-row sm:justify-center items-center mt-6 px-6 py-4 bg-sky-200 shadow-md overflow-hidden sm:rounded-xl">
+    <div class="relative h-screen flex flex-row sm:justify-center items-center sm:pt-0">
+        <!-- Background Blur -->
+        <div class="absolute inset-0 bg-cover bg-center blur-md" style="background-image: url('{{ asset('images/tirta-bg.jpeg') }}'); z-index: -1;"></div>
+
+        <div class="sm:max-md flex flex-row sm:justify-center items-center mt-6 px-6 py-4 bg-sky-200 bg-opacity-70 shadow-md overflow-hidden sm:rounded-xl backdrop-blur-md">
 
             <!-- kiri login -->
             <div class="w-full sm:max-w-md mt-6 px-6 mx-10 py-4 overflow-hidden sm:rounded-xl">
@@ -23,12 +25,11 @@
                 </div>
             </div>
 
-            <!-- kanan lgoin -->
+            <!-- kanan login -->
             <div class="w-full sm:max-w-md mt-6 px-6 mx-10 py-4 overflow-hidden sm:rounded-xl">
                 <!-- Judul -->
                 <div class="text-center">
                     <h6 class="text-3xl font-bold text-gray-900 font-fomo">Masuk ke Akun Anda</h6>
-
                 </div>
 
                 <!-- Form Login -->
@@ -36,10 +37,10 @@
                     @csrf
 
                     <!-- Email -->
-                    <div class="py-2 ">
+                    <div class="py-2">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
                         <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus
-                            class="mt-1 block w-full w-full border-b-2 rounded-xl shadow-sm sm:text-sm @error('email') border-red-500 @enderror">
+                            class="mt-1 block w-full border-b-2 rounded-xl shadow-sm sm:text-sm @error('email') border-red-500 @enderror">
                         @error('email')
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -47,7 +48,7 @@
 
                     <!-- Password -->
                     <div class="py-2">
-                        <label for="password" class="block text-sm font-medium text-gray-700">password</label>
+                        <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
                         <input id="password" type="password" name="password" required
                             class="mt-1 block w-full border-b-2 rounded-xl shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm @error('password') border-red-500 @enderror">
                         @error('password')
@@ -62,7 +63,9 @@
                             Masuk
                         </button>
                     </div>
+                </form>
             </div>
+
         </div>
     </div>
 </body>

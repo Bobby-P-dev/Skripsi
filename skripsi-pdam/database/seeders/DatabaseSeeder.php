@@ -15,19 +15,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $pelanggan = Pengguna_Model::where('peran', 'penlanggan')->first();
-        $admin = Pengguna_Model::where('peran', 'admin')->first();
-        // Pengguna_Model::factory(10)->create();
-        Laporan_Model::factory()->create([
-            'pelanggan_id' => 7,
-            'admin_id' => 3,
-            'judul' => 'pelaporan kerusakan',
-            'deskripsi' => 'tidak menyala',
-            'lokasi' => 'bekasi',
-            'tingkat_urgensi' => 'tinggi',
-            'foto_url' => 'https://ashdjab',
+        // $pelanggan = Pengguna_Model::where('peran', 'penlanggan')->first();
+        // $admin = Pengguna_Model::where('peran', 'admin')->first();
+        Pengguna_Model::factory(10)->create();
+        // Laporan_Model::factory()->create([
+        //     'pelanggan_id' => 7,
+        //     'admin_id' => 3,
+        //     'judul' => 'pelaporan kerusakan',
+        //     'deskripsi' => 'tidak menyala',
+        //     'lokasi' => 'bekasi',
+        //     'tingkat_urgensi' => 'tinggi',
+        //     'foto_url' => 'https://ashdjab',
 
-        ]);
+        // ]);
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
