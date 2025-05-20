@@ -4,10 +4,12 @@
         <!-- Header -->
         <div class="flex flex-wrap justify-between items-center mb-8 gap-4">
             <h1 class="text-3xl font-bold text-gray-800">Laporan Kerusakan</h1>
+            @if (auth()->user()->peran === 'pelanggan')
             <button id="openModalBtn"
                 class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow transition">
                 + Buat Laporan
             </button>
+            @endif
         </div>
 
         <!-- Cards Grid -->
