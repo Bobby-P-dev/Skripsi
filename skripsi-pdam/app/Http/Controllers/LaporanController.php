@@ -18,11 +18,6 @@ class LaporanController extends Controller
 
         $laporans = Laporan_Model::where('pelanggan_id', Auth::id())->get();
 
-        // Ambil URL gambar Cloudinary untuk setiap laporan
-        foreach ($laporans as $laporan) {
-            $laporan->cloudinary_image = $laporan->foto_url;
-        }
-
         return view('laporan.index', compact('laporans'));
     }
 
@@ -60,7 +55,7 @@ class LaporanController extends Controller
                 'lokasi' => $request->lokasi,
                 'foto_url' => $uploadFile,
                 'tingkat_urgensi' => $request->tingkat_urgensi,
-                'status' => 'pending',
+                'status' => 'tertunda',
             ]);
 
             DB::commit();

@@ -14,7 +14,7 @@
 
     <div class="flex items-center justify-center min-h-screen relative z-10">
         <div class="w-full max-w-5xl bg-white bg-opacity-80 backdrop-blur-md rounded-2xl shadow-xl p-8 mx-4 lg:flex lg:gap-12">
-            
+
             <!-- Left: Logo -->
             <div class="hidden lg:flex flex-col justify-center items-center w-full lg:w-1/2 px-6 py-4">
                 <img src="{{ asset('images/tirta.png') }}" alt="Tirta.png" class="w-52 mb-6">

@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 //penguna
 Route::get('/laporan', [LaporanController::class, 'getLaporan'])->name('laporan.index');
 Route::get('/laporan/home', [LaporanController::class, 'index'])->name('laporan.home');
-// Route::get('/laporan', [LaporanController::class, 'create'])->name('laporan.index');
+Route::get('/laporan/create', [LaporanController::class, 'create'])->name('laporan.create');
 Route::post('/laporan', [LaporanController::class, 'store'])
     ->name('laporan.store')
     ->middleware('auth');
