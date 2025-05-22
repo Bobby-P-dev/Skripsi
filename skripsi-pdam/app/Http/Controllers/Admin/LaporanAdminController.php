@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Laporan_Model;
 use DB;
 use Illuminate\Http\Client\Request;
+
 class LaporanAdminController extends Controller
 {
     public function index()
@@ -13,7 +15,7 @@ class LaporanAdminController extends Controller
             return redirect()->route('login')->withErrors(['login' => 'You must be logged in to view this page.']);
         }
         $laporanSaya = Laporan_Model::all();
-        return view('laporan.index', compact('laporan'));
+        return view('admin.laporan-index', compact('laporanSaya'));
     }
 
     public function showLaporan()

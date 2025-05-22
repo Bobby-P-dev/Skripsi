@@ -1,8 +1,10 @@
 <?php
 
-use App\Http\Controllers\admin\LaporanAdminController;
+
+use App\Http\Controllers\Admin\LaporanAdminController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Admin\PenggunaAdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,9 +35,14 @@ Route::delete('/laporan/delete/{id}', [LaporanController::class, 'delete'])->nam
 
 
 //admin
-Route::get('/laporan/home/admin', [LaporanAdminController::class, 'index'])->name('laporan.admin');
-Route::get('/laporan/validate/admin', [LaporanAdminController::class, 'accLaporan'])->name('laporan.show');
-Route::post('/laporan/validate/admin', [LaporanAdminController::class, 'accLaporan'])->name('laporan.acc');
+Route::prefix('admin')->middleware(['role.admin'])->group(function () {
+    Route::get('/data/pengguna', [PenggunaAdminController::class, 'index'])->name('data.admin');
+    Route::get('/laporan/home/admin', [LaporanAdminController::class, 'index'])->name('laporan.admin');
+});
+
+// Route::get('/laporan/home/admin', [LaporanAdminController::class, 'index'])->name('laporan.admin');
+// Route::get('/laporan/validate/admin', [LaporanAdminController::class, 'accLaporan'])->name('laporan.show');
+// Route::post('/laporan/validate/admin', [LaporanAdminController::class, 'accLaporan'])->name('laporan.acc');
 
 //dll
 Route::get('/', function () {

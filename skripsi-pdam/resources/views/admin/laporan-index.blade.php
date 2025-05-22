@@ -15,8 +15,8 @@
         <!-- Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            @if($laporans && count($laporans) > 0)
-            @foreach ($laporans as $laporan)
+            @if($laporanSaya && count($laporanSaya) > 0)
+            @foreach ($laporanSaya as $laporan)
             <!-- Card 1 -->
             <div class="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden">
                 @if(!empty($laporan->foto_url))
