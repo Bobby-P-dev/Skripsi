@@ -58,7 +58,10 @@
             <div class="col-span-full flex items-center justify-center min-h-[60vh]">
                 <img src="{{ asset('images/55024599_9264882.svg') }}"
                     alt="No Data"
-                    class="w-full max-h-[100vh] object-contain opacity-70">
+                    class="w-full max-h-[100vh] object-contain opacity-70
+                    md:max-w-md  <!-- Untuk layar medium -->
+                    sm:max-w-xs  <!-- Untuk layar kecil -->
+                    xs:max-w-[200px]">
             </div>
             @endif
 
