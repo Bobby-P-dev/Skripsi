@@ -13,7 +13,7 @@
         <x-sidebar />
         <div class="flex flex-col flex-1">
             <x-header />
-            <main class="overflow-y-auto bg-gray-50 md:px-8 md:py-6">
+            <main class="overflow-y-auto h-screen bg-gray-50 md:px-8 md:py-6">
                 {{ $slot }}
             </main>
         </div>

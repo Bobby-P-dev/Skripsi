@@ -38,6 +38,7 @@ Route::delete('/laporan/delete/{id}', [LaporanController::class, 'delete'])->nam
 Route::prefix('admin')->middleware(['role.admin'])->group(function () {
     Route::get('/data/pengguna', [PenggunaAdminController::class, 'index'])->name('data.admin');
     Route::get('/laporan/home/admin', [LaporanAdminController::class, 'index'])->name('laporan.admin');
+    Route::get('/laporan/realtime', [LaporanController::class, 'realtime'])->name('laporan.realtime');
 });
 
 // Route::get('/laporan/home/admin', [LaporanAdminController::class, 'index'])->name('laporan.admin');

@@ -21,6 +21,13 @@ class LaporanController extends Controller
         return view('laporan.index', compact('laporans'));
     }
 
+    public function realtime()
+    {
+        // Ambil semua laporan, bisa juga tambahkan with('user') jika perlu relasi user
+        $laporans = Laporan_Model::with('user')->orderBy('created_at', 'desc')->get();
+        return response()->json($laporans);
+    }
+
     public function index()
     {
         if (!Auth::check()) {
