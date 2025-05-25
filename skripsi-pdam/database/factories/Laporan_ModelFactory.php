@@ -26,6 +26,7 @@ class Laporan_ModelFactory extends Factory
             'foto_url' => $this->faker->imageUrl(640, 480, 'technics'),
             'tingkat_urgensi' => $this->faker->randomElement(['rendah', 'sedang', 'tinggi']),
             'status' => $this->faker->randomElement(['tertunda', 'ditugaskan', 'berlangsung', 'selesai']),
+
             'created_at' => now(),
             'updated_at' => now()
         ];

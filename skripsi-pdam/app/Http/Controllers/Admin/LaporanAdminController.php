@@ -14,7 +14,11 @@ class LaporanAdminController extends Controller
         if (!auth()->check()) {
             return redirect()->route('login')->withErrors(['login' => 'You must be logged in to view this page.']);
         }
-        $laporanSaya = Laporan_Model::all();
+        $laporanSaya = Laporan_Model::joinWithPengguna()->orderBy('laporan.created_at', 'desc')->get();
+
+        // opsi untuk paginasi mas
+        // $laporanSaya = Laporan_Model::joinWithPengguna()->orderBy('laporan.created_at', 'desc')->paginate(10);
+
         return view('admin.laporan-index', compact('laporanSaya'));
     }
 

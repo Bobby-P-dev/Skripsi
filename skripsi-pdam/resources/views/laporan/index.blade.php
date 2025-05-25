@@ -15,8 +15,8 @@
         <!-- Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            @if($laporans && count($laporans) > 0)
-            @foreach ($laporans as $laporan)
+            @if($laporanSaya && count($laporanSaya) > 0)
+            @foreach ($laporanSaya as $laporan)
             <!-- Card 1 -->
             <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col">
                 <!-- Gambar -->
@@ -53,7 +53,7 @@
                             @else
                             <img src="https://ui-avatars.com/api/?name={{ urlencode($laporan->user->name ?? 'User') }}&background=4f46e5&color=fff&size=32" alt="User" class="w-7 h-7 rounded-full border">
                             @endif
-                            <span class="text-xs text-gray-500">{{ $laporan->user->name ?? 'Anonim' }}</span>
+                            <span class="text-xs text-gray-500">{{ $laporan->nama_pelanggan ?? 'Anonim' }}</span>
                         </div>
                         <div class="flex items-center gap-1 text-sm text-gray-500">
                             <span class="inline-flex items-center gap-1">
@@ -72,7 +72,7 @@
                             data-judul="{{ $laporan->judul }}"
                             data-deskripsi="{{ $laporan->deskripsi }}"
                             data-userfoto="{{ isset($laporan->user) && $laporan->user->profile_photo_path ? asset('storage/' . $laporan->user->profile_photo_path) : 'https://ui-avatars.com/api/?name=' . urlencode($laporan->user->name ?? 'User') . '&background=4f46e5&color=fff&size=32' }}"
-                            data-username="{{ $laporan->user->name ?? 'Anonim' }}"
+                            data-username="{{ $laporan->nama_pelanggan ?? 'Anonim' }}"
                             data-lokasi="{{ $laporan->lokasi }}"
                             data-tanggal="{{ \Carbon\Carbon::parse($laporan->created_at)->translatedFormat('d F Y H:i') }}">
                             Lihat detail →

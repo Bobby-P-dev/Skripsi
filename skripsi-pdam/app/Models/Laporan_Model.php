@@ -41,4 +41,10 @@ class Laporan_Model extends Model
     {
         return $query->where('status', 'pending');
     }
+
+    public function scopeJoinWithPengguna($query)
+    {
+        return $query->join('pengguna', 'laporan.pelanggan_id', '=', 'pengguna.pengguna_id')
+            ->select('laporan.*', 'pengguna.nama as nama_pelanggan');
+    }
 }
