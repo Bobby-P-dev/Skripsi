@@ -18,7 +18,9 @@ class Laporan_Model extends Model
         'lokasi',
         'tingkat_urgensi',
         'status',
-        'foto_url'
+        'foto_url',
+        'longitude',
+        'latitude',
     ];
     protected $table = 'laporan';
     const CREATED_AT = 'created_at';
@@ -37,7 +39,6 @@ class Laporan_Model extends Model
 
     public function scopeMenungggu($query)
     {
-        return $query->where('status', 'Menunggu');
+        return $query->where('status', 'pending');
     }
-
 }

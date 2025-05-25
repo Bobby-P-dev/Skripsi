@@ -28,6 +28,8 @@ class LaporanCreateRequest extends FormRequest
             'lokasi' => 'required|string|max:255',
             'tingkat_urgensi' => 'required|in:rendah,sedang,tinggi',
             'foto_url' => 'required|image|mimes:jpeg,png,jpg|max:5120',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
         ];
     }
 }

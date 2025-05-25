@@ -62,7 +62,9 @@ class LaporanController extends Controller
                 'lokasi' => $request->lokasi,
                 'foto_url' => $uploadFile,
                 'tingkat_urgensi' => $request->tingkat_urgensi,
-                'status' => 'tertunda',
+                'status' => 'pending',
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
             ]);
 
             DB::commit();
