@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pelanggan;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\LaporanCreateRequest;
 use App\Models\Laporan_Model;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
@@ -16,8 +17,7 @@ class LaporanController extends Controller
             return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        $laporans = Laporan_Model::where('pelanggan_id', Auth::id())->get();
-
+        $laporans = Laporan_Model::joinPengguna()->orderBy('laporan.created_at', 'desc')->get();
         return view('laporan.index', compact('laporans'));
     }
 
@@ -33,7 +33,7 @@ class LaporanController extends Controller
         if (!Auth::check()) {
             return redirect()->route('login')->withErrors(['login' => 'You must be logged in to view this page.']);
         }
-        $laporan = Laporan_Model::where('pelanggan_id', Auth::id())->get();
+        $laporan = Laporan_Model::joinPengguna()->orderBy('laporan.created_at', 'desc');
         return view('laporan.index', \compact('laporan'));
     }
 

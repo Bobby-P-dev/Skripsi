@@ -15,8 +15,8 @@
         <!-- Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            @if($laporanSaya && count($laporanSaya) > 0)
-            @foreach ($laporanSaya as $laporan)
+            @if($laporans && count($laporans) > 0)
+            @foreach ($laporans as $laporan)
             <!-- Card 1 -->
             <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col">
                 <!-- Gambar -->
@@ -48,10 +48,10 @@
                         <h2 class="text-lg font-bold text-gray-800 line-clamp-1">{{ $laporan->judul }}</h2>
                         <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ $laporan->deskripsi }}</p>
                         <div class="flex items-center gap-2 mb-2">
-                            @if(isset($laporan->user) && $laporan->user->profile_photo_path)
-                            <img src="{{ asset('storage/' . $laporan->user->profile_photo_path) }}" alt="User" class="w-7 h-7 rounded-full border">
+                            @if(isset($laporan->user) && $laporan->foto_pelanggan)
+                            <img src="{{ asset('storage/' . $laporan->foto_pelanggan) }}" alt="User" class="w-7 h-7 rounded-full border">
                             @else
-                            <img src="https://ui-avatars.com/api/?name={{ urlencode($laporan->user->name ?? 'User') }}&background=4f46e5&color=fff&size=32" alt="User" class="w-7 h-7 rounded-full border">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode( 'User') }}&background=4f46e5&color=fff&size=32" alt="User" class="w-7 h-7 rounded-full border">
                             @endif
                             <span class="text-xs text-gray-500">{{ $laporan->nama_pelanggan ?? 'Anonim' }}</span>
                         </div>
@@ -71,7 +71,7 @@
                             data-urgensi="{{ $laporan->tingkat_urgensi }}"
                             data-judul="{{ $laporan->judul }}"
                             data-deskripsi="{{ $laporan->deskripsi }}"
-                            data-userfoto="{{ isset($laporan->user) && $laporan->user->profile_photo_path ? asset('storage/' . $laporan->user->profile_photo_path) : 'https://ui-avatars.com/api/?name=' . urlencode($laporan->user->name ?? 'User') . '&background=4f46e5&color=fff&size=32' }}"
+                            data-userfoto="{{ isset($laporan->user) && $laporan->user->foto_pelanggan ? asset('storage/' . $laporan->user->profile_photo_path) : 'https://ui-avatars.com/api/?name=' . urlencode($laporan->user->name ?? 'User') . '&background=4f46e5&color=fff&size=32' }}"
                             data-username="{{ $laporan->nama_pelanggan ?? 'Anonim' }}"
                             data-lokasi="{{ $laporan->lokasi }}"
                             data-tanggal="{{ \Carbon\Carbon::parse($laporan->created_at)->translatedFormat('d F Y H:i') }}">

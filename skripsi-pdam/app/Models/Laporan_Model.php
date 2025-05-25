@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Laporan_Model extends Model
 {
@@ -45,6 +46,12 @@ class Laporan_Model extends Model
     public function scopeJoinWithPengguna($query)
     {
         return $query->join('pengguna', 'laporan.pelanggan_id', '=', 'pengguna.pengguna_id')
-            ->select('laporan.*', 'pengguna.nama as nama_pelanggan');
+            ->select('laporan.*', 'pengguna.nama as nama_pelanggan', 'pengguna.foto_profil as foto_pelanggan');
+    }
+
+    public function scopeJoinPengguna($query)
+    {
+        return $query->join('pengguna', 'laporan.pelanggan_id', '=', 'pengguna.pengguna_id')->where('pelanggan_id', Auth::id())
+            ->select('laporan.*', 'pengguna.nama as nama_pelanggan', 'pengguna.foto_profil as foto_pelanggan');
     }
 }

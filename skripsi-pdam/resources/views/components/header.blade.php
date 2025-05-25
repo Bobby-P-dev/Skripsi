@@ -6,7 +6,7 @@
             <span class="sr-only">Open user menu</span>
             <img class="w-8 h-8 rounded-full"
                 src="@if(Auth::check() && Auth::user()->path_fotonya_dmn_ini_bob)
-                        {{ asset('storage/' . Auth::user()->path_fotonya_dmn_ini_bob) }}
+                        {{ asset('storage/' . Auth::user()->foto_profil) }}
                     @else
                         https://flowbite.com/docs/images/people/profile-picture-5.jpg
                     @endif"
@@ -16,11 +16,11 @@
         <div id="dropdownUserMenu" class="z-50 hidden absolute right-0 mt-2 w-48 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm">
             <div class="px-4 py-3">
                 @if(Auth::check())
-                    <p class="text-sm text-gray-900">{{ Auth::user()->nama_juga_bob }}</p>
-                    <p class="text-sm font-medium text-gray-900 truncate">{{ Auth::user()->email }}</p>
+                <p class="text-sm text-gray-900">{{ Auth::user()->nama_juga_bob }}</p>
+                <p class="text-sm font-medium text-gray-900 truncate">{{ Auth::user()->email }}</p>
                 @else
-                    <p class="text-sm text-gray-900">Guest</p>
-                    <p class="text-sm font-medium text-gray-900 truncate">-</p>
+                <p class="text-sm text-gray-900">Guest</p>
+                <p class="text-sm font-medium text-gray-900 truncate">-</p>
                 @endif
             </div>
             <ul class="py-1" role="none">

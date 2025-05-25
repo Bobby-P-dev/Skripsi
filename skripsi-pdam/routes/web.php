@@ -2,7 +2,7 @@
 
 
 use App\Http\Controllers\Admin\LaporanAdminController;
-use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\Pelanggan\LaporanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\PenggunaAdminController;
 use Illuminate\Support\Facades\Route;
