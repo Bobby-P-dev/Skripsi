@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Laporan_Model;
+use App\View\Components\laporan;
 use DB;
 use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LaporanAdminController extends Controller
 {
@@ -26,23 +28,35 @@ class LaporanAdminController extends Controller
     {
         return view('laporan.acc');
     }
-    public function accLaporan(Request $request, $id)
+    public function accLaporan(Laporan_Model $laporan)
     {
-        //kekurangan menambahkan validasi untuk memastikan admin yang dapat mengakses
         DB::beginTransaction();
-
         try {
-            $laporan = Laporan_Model::findOrFail($id);
-            $laporan->update(([
-                'admin_id' => auth()->user()->id,
-                'status' => $request['status'],
-            ]));
+            $laporan->update([
+                'admin_id' => Auth::id(),
+                'status'   => 'diterima',
+            ]);
             DB::commit();
-
-            return redirect()->back()->with('success', 'Laporan accepted successfully.');
+            return redirect()->back()->with('success', 'Laporan berhasil diterima.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Failed to accept laporan: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Gagal menerima laporan: ' . $e->getMessage()]);
+        }
+    }
+
+    public function tolakLaporan(Laporan_Model $laporan)
+    {
+        DB::beginTransaction();
+        try {
+            $laporan->update([
+                'admin_id' => Auth::id(),
+                'status' => 'ditolak',
+            ]);
+            DB::commit();
+            return redirect()->back()->with('success', 'Laporan berhasil ditolak.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->withErrors(['error' => 'Gagal menolak laporan: ' . $e->getMessage()]);
         }
     }
 }

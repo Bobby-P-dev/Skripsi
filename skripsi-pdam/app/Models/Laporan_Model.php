@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Str;
 
 class Laporan_Model extends Model
 {
@@ -23,10 +24,13 @@ class Laporan_Model extends Model
         'longitude',
         'latitude',
     ];
+
+    protected $keyType = 'string';
     protected $table = 'laporan';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     protected $primaryKey = 'laporan_uuid';
+    public $incrementing = false;
 
     public function admin()
     {
@@ -36,6 +40,19 @@ class Laporan_Model extends Model
     public function pelanggan()
     {
         return $this->belongsTo(Pengguna_Model::class, 'pelanggan_id', 'pengguna_id');
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function ($model) {
+            if (empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
+            }
+        });
+    }
+    public function getRouteKeyName()
+    {
+        return 'laporan_uuid';
     }
 
     public function scopeMenungggu($query)
@@ -52,6 +69,12 @@ class Laporan_Model extends Model
     public function scopeJoinPengguna($query)
     {
         return $query->join('pengguna', 'laporan.pelanggan_id', '=', 'pengguna.pengguna_id')->where('pelanggan_id', Auth::id())
-            ->select('laporan.*', 'pengguna.nama as nama_pelanggan', 'pengguna.foto_profil as foto_pelanggan');
+            ->select(
+                'laporan.*',
+                'pengguna.nama as nama_pelanggan',
+                'pengguna.foto_profil as foto_pelanggan',
+                'pengguna.pengguna_id as pengguna_id',
+                'pengguna.role as role'
+            );
     }
 }

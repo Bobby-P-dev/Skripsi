@@ -1,11 +1,13 @@
 <?php
 
+namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
-use App\Http\Requests\PenugasanCreateRequest;
 use App\Http\Requests\PenuggasanCreateRequest;
 use App\Models\Laporan_Model;
 use App\Models\Pengguna_Model;
 use App\Models\Penugasan_Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PenugasanAdminController extends Controller
@@ -20,29 +22,38 @@ class PenugasanAdminController extends Controller
         return view('layouts.home', compact('laporan', 'teknisi'));
     }
 
-    public function StorePenuggasan(PenuggasanCreateRequest $request)
-    {
 
+    public function store(PenuggasanCreateRequest $request) // Nama method dan Form Request disesuaikan
+    {
         DB::beginTransaction();
         try {
 
-            $laporan = Laporan_Model::where('uuid', $request->lapaoran_uuid)->first();
-            $laporan->status = 'dalam penanganan';
+            $laporan = Laporan_Model::where('laporan_uuid', $request->input('laporan_uuid'))->first();
+
+
+            if (!$laporan) {
+                DB::rollBack();
+                return redirect()->back()->withInput()->withErrors(['laporan_uuid' => 'Laporan yang dipilih tidak valid atau tidak ditemukan.']);
+            }
+
+            $laporan->status = 'ditugaskan';
             $laporan->save();
 
-            Penugasan_Model::created([
-                'laporan_uuid' => $request->laporan_uuid,
-                'teknisi_id' => $request->teknisi_id,
-                'admin_id' => $request->admin_id,
-                'tenggat_waktu' => $request->tenggat_waktu,
-                'catatan' => $request->catatan,
+            Penugasan_Model::create([
+                'laporan_uuid'  => $laporan->laporan_uuid,
+                'teknisi_id'    => $request->input('teknisi_id'),
+                'admin_id'      => Auth::id(),
+                'tenggat_waktu' => $request->input('tenggat_waktu'),
+                'catatan'       => $request->input('catatan'),
             ]);
 
             DB::commit();
-            return redirect()->route('penugasan')->with('succsess', 'penugasan created succesfuly');
+
+            return redirect()->route('penugasan.index')->with('success', 'Penugasan berhasil dibuat.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Failed to create penugasan: ' . $e->getMessage()]);
-        };
+
+            return redirect()->back()->withInput()->withErrors(['error' => 'Gagal membuat penugasan: ' . $e->getMessage()]);
+        }
     }
 }

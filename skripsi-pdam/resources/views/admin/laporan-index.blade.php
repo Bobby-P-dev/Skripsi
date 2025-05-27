@@ -66,7 +66,8 @@
                     <div class="mt-3 flex justify-between items-center">
                         <button
                             class="inline-flex items-center gap-1 text-sm text-indigo-600 font-semibold hover:underline transition detail-btn"
-                            data-foto="{{ $laporan->foto_pelanggan ?: asset('images/tirta.png') }}"
+                            data-id="{{ $laporan->id }}"
+                            data-foto="{{ $laporan->foto_url ?: asset('images/tirta.png') }}"
                             data-status="{{ $laporan->status }}"
                             data-urgensi="{{ $laporan->tingkat_urgensi }}"
                             data-judul="{{ $laporan->judul }}"
@@ -77,8 +78,32 @@
                             data-tanggal="{{ \Carbon\Carbon::parse($laporan->created_at)->translatedFormat('d F Y H:i') }}">
                             Lihat detail →
                         </button>
-                        <button class="rounded-xl border bg-red-500 py-2 px-2">Tolak</button>
-                        <button class="rounded-xl border bg-blue-500 py-2 px-2">konfirmasi</button>
+
+                        <div class="flex justify-end gap-2">
+                            @if ($laporan->status === 'pending')
+                            <form action="{{ route('laporan.tolak', ['laporan' => $laporan->getKey()]) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="rounded-xl border bg-red-500 py-2 px-2 text-white">Tolak</button>
+                            </form>
+
+                            <form action="{{ route('laporan.konfirmasi', ['laporan' => $laporan->getKey()]) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="rounded-xl border bg-green-500 py-2 px-2 text-white">Konfirmasi</button>
+                            </form>
+                            @elseif ($laporan->status === 'diterima')
+                            <button
+                                type="button"
+                                class="open-penugasan-modal-btn rounded-full border px-2 py-2 bg-blue-500 text-white"
+                                data-laporan-uuid="{{ $laporan->getKey() }}"
+                                data-laporan-judul="{{ $laporan->judul }}">
+                                Buat Penugasan
+                            </button>
+                            @elseif ($laporan->status === 'ditolak')
+                            @endif
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -94,7 +119,6 @@
                 <p class="text-sm text-gray-500 mt-2">Data laporan belum tersedia saat ini. Silakan periksa kembali nanti.</p>
             </div>
             @endif
-
         </div>
 
         <!-- Modal -->
@@ -124,77 +148,9 @@
 
     </div>
 
+    @include('admin.penugasan.penugasan-create')
     @include('laporan.preview-image')
     @include('laporan.create')
-    <script>
-        //preview gambar
-        const previewModal = document.getElementById('imagePreviewModal');
-        const previewImg = document.getElementById('previewImage');
-        const closePreview = document.getElementById('closeImagePreview');
-
-        document.querySelectorAll('.previewable').forEach(img => {
-            img.addEventListener('click', () => {
-                previewImg.src = img.getAttribute('data-src');
-                previewModal.classList.remove('hidden');
-                previewModal.classList.add('flex');
-            });
-        });
-
-        closePreview.addEventListener('click', () => {
-            previewModal.classList.add('hidden');
-            previewModal.classList.remove('flex');
-        });
-
-        previewModal.addEventListener('click', (e) => {
-            if (e.target === previewModal) {
-                previewModal.classList.add('hidden');
-                previewModal.classList.remove('flex');
-            }
-        });
-
-        // modal card ini bob
-        document.querySelectorAll('.detail-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                // Isi modal dengan data dari tombol
-                document.getElementById('detailFoto').src = btn.dataset.foto;
-                document.getElementById('detailStatus').textContent = btn.dataset.status.charAt(0).toUpperCase() + btn.dataset.status.slice(1);
-                document.getElementById('detailUrgensi').textContent = btn.dataset.urgensi.charAt(0).toUpperCase() + btn.dataset.urgensi.slice(1);
-                document.getElementById('detailJudul').textContent = btn.dataset.judul;
-                document.getElementById('detailDeskripsi').textContent = btn.dataset.deskripsi;
-                document.getElementById('detailUserFoto').src = btn.dataset.userfoto;
-                document.getElementById('detailUserName').textContent = btn.dataset.username;
-                document.getElementById('detailLokasi').textContent = btn.dataset.lokasi;
-                document.getElementById('detailTanggal').textContent = btn.dataset.tanggal;
-
-                // Badge warna
-                const statusBadge = document.getElementById('detailStatus');
-                statusBadge.className = 'px-3 py-1 rounded-full text-xs font-semibold ' +
-                    (btn.dataset.status === 'selesai' ? 'bg-green-500 text-white' :
-                        (btn.dataset.status === 'proses' ? 'bg-yellow-500 text-white' : 'bg-red-500 text-white'));
-
-                const urgensiBadge = document.getElementById('detailUrgensi');
-                urgensiBadge.className = 'px-3 py-1 rounded-full text-xs font-semibold ' +
-                    (btn.dataset.urgensi === 'tinggi' ? 'bg-red-500 text-white' :
-                        (btn.dataset.urgensi === 'sedang' ? 'bg-yellow-500 text-white' : 'bg-blue-500 text-white'));
-
-                // Tampilkan modal
-                document.getElementById('detailModal').classList.remove('hidden');
-                document.getElementById('detailModal').classList.add('flex');
-            });
-        });
-
-        // Tutup modal detail
-        document.getElementById('closeDetailModal').addEventListener('click', function() {
-            document.getElementById('detailModal').classList.add('hidden');
-            document.getElementById('detailModal').classList.remove('flex');
-        });
-        document.getElementById('detailModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.add('hidden');
-                this.classList.remove('flex');
-            }
-        });
-    </script>
+    @include('admin.partials.laporan-js')
 
 </x-home>

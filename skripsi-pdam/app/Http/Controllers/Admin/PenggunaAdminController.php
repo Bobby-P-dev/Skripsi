@@ -9,11 +9,12 @@ use Illuminate\Http\Request;
 
 class PenggunaAdminController extends Controller
 {
-    public function index()
+    public function teknisiGetOption()
     {
-        $user = Pengguna_Model::all();
-        return view('users.index', compact('user'));
+        $users = Pengguna_Model::where('peran', 'teknisi')->select('pengguna_id', 'nama')->get();
+        return response()->json($users);
     }
+
 
     public function GetUserById($id)
     {

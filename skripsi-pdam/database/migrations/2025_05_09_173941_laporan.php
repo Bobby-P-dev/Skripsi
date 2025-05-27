@@ -26,7 +26,7 @@ return new class extends Migration
             $table->text('lokasi');
             $table->string('foto_url')->nullable();
             $table->enum('tingkat_urgensi', ['rendah', 'sedang', 'tinggi'])->index();
-            $table->enum('status', ['pending', 'diterima', 'ditugaskan', 'berlangsung', 'selesai'])
+            $table->enum('status', ['pending', 'ditolak', 'diterima', 'ditugaskan', 'berlangsung', 'selesai'])
                 ->default('pending')
                 ->index();
             $table->decimal('latitude', 10, 7);
