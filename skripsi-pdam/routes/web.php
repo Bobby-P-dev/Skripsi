@@ -20,14 +20,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 //penguna
-Route::get('/laporan', [LaporanController::class, 'getLaporan'])->name('laporan.index');
-Route::get('/laporan/home', [LaporanController::class, 'index'])->name('laporan.home');
+Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
 Route::get('/laporan/create', [LaporanController::class, 'create'])->name('laporan.create');
-Route::post('/laporan', [LaporanController::class, 'store'])
-    ->name('laporan.store')
-    ->middleware('auth');
+Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store')->middleware('auth');
+Route::get('/laporan/edit/{laporan_uuid}', [LaporanController::class, 'edit'])->name('laporan.edit');
+Route::patch('/laporan/update/{laporan_uuid}', [LaporanController::class, 'update'])->name('laporan.update');
 
-
+//---
 Route::Get('/laporan/show/update{id}', [LaporanController::class, 'showUpdate'])->name('laporan.showUpdate');
 Route::put('/laporan/update/{id}', [LaporanController::class, 'update'])->name('laporan.update');
 Route::get('/laporan/show/delete/{id}', [LaporanController::class, 'showDelete'])->name('laporan.delete');

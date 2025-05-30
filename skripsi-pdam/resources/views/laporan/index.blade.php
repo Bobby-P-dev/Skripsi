@@ -77,10 +77,17 @@
                             data-tanggal="{{ \Carbon\Carbon::parse($laporan->created_at)->translatedFormat('d F Y H:i') }}">
                             Lihat detail →
                         </button>
+                        <div>
+                            <button class="show-modal rounded-full bg-blue-500 border px-3 py-3">
+                                Edit
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
             @endforeach
+
+
             @else
             <div class="col-span-full flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
                 <div class="w-32 mb-4 text-gray-600">
@@ -124,28 +131,72 @@
 
     @include('laporan.preview-image')
     @include('laporan.create')
+    @include('laporan.edit')
     <script>
-        //add modal
-        const openBtn = document.getElementById('openModalBtn');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const modal = document.getElementById('buatLaporanModal');
+        //modal edit
+        document.addEventListener('DOMContentLoaded', function() {
+            let triggerElement = null;
 
-        openBtn.addEventListener('click', () => {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        });
-
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
-        });
+            const editModal = document.getElementById('editLaporanModal');
+            const openEditModalBtns = document.querySelectorAll('.show-modal');
+            const closeModalHeaderBtn = document.getElementById('closeModalHeaderBtn');
+            const closeEditModalFooterBtn = document.getElementById('closeEditModalFooterBtn');
 
 
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
+            const animationDuration = 300;
+
+            if (!editModal) {
+                console.error('Elemen modal "editLaporanModal" tidak ditemukan.');
+                return;
             }
+
+            const openModal = function(event) {
+                triggerElement = event.currentTarget;
+
+                editModal.classList.remove('hidden');
+                editModal.removeAttribute('aria-hidden');
+                requestAnimationFrame(() => {
+                    editModal.classList.remove('opacity-0', 'scale-95');
+                });
+                editModal.focus();
+            };
+
+            const closeModal = function() {
+                if (!editModal.classList.contains('hidden')) {
+                    editModal.classList.add('opacity-0', 'scale-95');
+
+                    setTimeout(() => {
+                        editModal.classList.add('hidden');
+                        editModal.setAttribute('aria-hidden', 'true');
+                        if (triggerElement) {
+                            triggerElement.focus();
+                            triggerElement = null;
+                        }
+                    }, animationDuration);
+                }
+            };
+
+            openEditModalBtns.forEach(function(btn) {
+                btn.addEventListener('click', openModal);
+            });
+
+            if (closeModalHeaderBtn) {
+                closeModalHeaderBtn.addEventListener('click', closeModal);
+            } else {
+                console.warn('Tombol tutup header "closeModalHeaderBtn" tidak ditemukan.');
+            }
+
+            if (closeEditModalFooterBtn) {
+                closeEditModalFooterBtn.addEventListener('click', closeModal);
+            } else {
+                console.warn('Tombol tutup footer "closeEditModalFooterBtn" tidak ditemukan.');
+            }
+
+            editModal.addEventListener('click', function(event) {
+                if (event.target === editModal) {
+                    closeModal();
+                }
+            });
         });
 
         //preview gambar

@@ -4,37 +4,30 @@ namespace App\Http\Controllers\Pelanggan;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LaporanCreateRequest;
-use App\Models\Laporan_Model;
+use App\Services\Laporan\User\LaporanPengguna;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LaporanController extends Controller
 {
-    public function getLaporan()
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login')->with('error', 'Silakan login terlebih dahulu.');
-        }
+    protected LaporanPengguna $laporanPenggunaService;
 
-        $laporans = Laporan_Model::joinPengguna()->orderBy('laporan.created_at', 'desc')->get();
-        return view('laporan.index', compact('laporans'));
-    }
-
-    public function realtime()
+    public function __construct(LaporanPengguna $laporanPenggunaService)
     {
-        // Ambil semua laporan, bisa juga tambahkan with('user') jika perlu relasi user
-        $laporans = Laporan_Model::with('user')->orderBy('created_at', 'desc')->get();
-        return response()->json($laporans);
+        $this->laporanPenggunaService = $laporanPenggunaService;
+        $this->middleware('auth');
     }
 
     public function index()
     {
-        if (!Auth::check()) {
-            return redirect()->route('login')->withErrors(['login' => 'You must be logged in to view this page.']);
-        }
-        $laporan = Laporan_Model::joinPengguna()->orderBy('laporan.created_at', 'desc');
-        return view('laporan.index', \compact('laporan'));
+        $userId = Auth::id();
+
+
+        $laporans = $this->laporanPenggunaService->IndexLaporan($userId);
+
+
+        return view('laporan.index', compact('laporans'));
     }
 
     public function create()
@@ -45,85 +38,81 @@ class LaporanController extends Controller
     public function store(LaporanCreateRequest $request)
     {
         DB::beginTransaction();
+        $validatedData = $request->validated();
+
 
         try {
-            if (!$request->hasFile('foto_url')) {
-                throw new \Exception('File foto wajib diupload.');
+
+            if ($request->hasFile('foto_url')) {
+                $uploadFile = Cloudinary::upload($request->file('foto_url')->getRealPath(), [
+                    'folder' => 'laporan',
+                ])->getSecurePath();
             }
 
-            $uploadFile = Cloudinary::upload($request->file('foto_url')->getRealPath(), [
-                'folder' => 'laporan',
-            ])->getSecurePath();
-
-            Laporan_Model::create([
+            $laporanCreate = [
                 'pelanggan_id' => Auth::id(),
-                'judul' => $request->judul,
-                'deskripsi' => $request->deskripsi,
-                'lokasi' => $request->lokasi,
+                'judul' => $validatedData['judul'],
+                'deskripsi' => $validatedData['deskripsi'],
+                'lokasi' => $validatedData['lokasi'],
                 'foto_url' => $uploadFile,
-                'tingkat_urgensi' => $request->tingkat_urgensi,
+                'tingkat_urgensi' => $validatedData['tingkat_urgensi'],
                 'status' => 'pending',
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
-            ]);
+                'latitude' => $validatedData['latitude'],
+                'longitude' => $validatedData['longitude'],
+            ];
 
-            DB::commit();
-            return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dibuat.');
+            $laporan = $this->laporanPenggunaService->CreateLaporan($laporanCreate);
+            if ($laporan) {
+                DB::commit();
+                return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dibuat.');
+            }
         } catch (\Exception $e) {
             DB::rollBack();
             return redirect()->back()->withErrors(['error' => 'Gagal membuat laporan: ' . $e->getMessage()]);
         }
     }
-    public function showUpdate($id)
+
+    public function edit($laporan_uuid)
     {
-        $laporan = Laporan_Model::findOrFail($id);
-        return view('laporan.update', compact('laporan'));
-    }
+        $laporans = $this->laporanPenggunaService->GetLaporanByUuid($laporan_uuid);
 
-    public function update(LaporanCreateRequest $request, $id)
-    {
-        DB::beginTransaction();
-
-        try {
-            $laporan = Laporan_Model::findOrFail($id);
-            if ($laporan->pelanggan_id !== Auth::id()) {
-                return redirect()->route('laporan.index')->withErrors(['error' => 'You do not have permission to delete this report.']);
-            }
-
-            $laporan->update([
-                'judul' => $request['judul'],
-                'deskripsi' => $request['deskripsi'],
-                'lokasi' => $request['lokasi'],
-                'tingkat_urgensi' => $request['tingkat_urgensi'],
-            ]);
-            DB::commit();
-
-            return redirect()->route('laporan.index')->with('success', 'Laporan updated successfully.');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Failed to update laporan: ' . $e->getMessage()]);
+        if (!$laporans) {
+            return redirect()->route('laporan.index')->withErrors(['error' => 'Laporan tidak ditemukan.']);
         }
+        return view('laporan.edit', compact('laporan'));
     }
 
-    public function showDelete()
+    public function editStore($laporan_uuid, LaporanCreateRequest $request)
     {
-        return view('laporan.delete');
-    }
 
-    public function Delete($id)
-    {
         DB::beginTransaction();
+        $validatedData = $request->validated();
+        $uploadFile = null;
+
         try {
-            $laporan = Laporan_Model::findOrFail($id);
-            if ($laporan->pelanggan_id !== Auth::id()) {
-                return redirect()->route('laporan.index')->withErrors(['error' => 'You do not have permission to delete this report.']);
+            if ($request->hasFile('foto_url')) {
+                $uploadFile = Cloudinary::upload($request->file('foto_url')->getRealPath(), [
+                    'folder' => 'laporan',
+                ])->getSecurePath();
             }
-            $laporan->delete();
-            DB::commit();
-            return view('laporan.index', compact('laporan'));
+
+            $laporanUpdate = [
+                'judul' => $validatedData['judul'],
+                'deskripsi' => $validatedData['deskripsi'],
+                'lokasi' => $validatedData['lokasi'],
+                'foto_url' => $uploadFile,
+                'latitude' => $validatedData['latitude'],
+                'longitude' => $validatedData['longitude'],
+            ];
+
+            $laporan = $this->laporanPenggunaService->UpdateLaporan($laporan_uuid, $laporanUpdate);
+            if ($laporan) {
+                DB::commit();
+                return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diperbarui.');
+            }
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->withErrors(['error' => 'Failed to delete laporan: ' . $e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => 'Gagal memperbarui laporan: ' . $e->getMessage()]);
         }
     }
 }

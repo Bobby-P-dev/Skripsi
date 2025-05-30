@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Str;
 
 class Laporan_Model extends Model
@@ -58,23 +57,5 @@ class Laporan_Model extends Model
     public function scopeMenungggu($query)
     {
         return $query->where('status', 'pending');
-    }
-
-    public function scopeJoinWithPengguna($query)
-    {
-        return $query->join('pengguna', 'laporan.pelanggan_id', '=', 'pengguna.pengguna_id')
-            ->select('laporan.*', 'pengguna.nama as nama_pelanggan', 'pengguna.foto_profil as foto_pelanggan');
-    }
-
-    public function scopeJoinPengguna($query)
-    {
-        return $query->join('pengguna', 'laporan.pelanggan_id', '=', 'pengguna.pengguna_id')->where('pelanggan_id', Auth::id())
-            ->select(
-                'laporan.*',
-                'pengguna.nama as nama_pelanggan',
-                'pengguna.foto_profil as foto_pelanggan',
-                'pengguna.pengguna_id as pengguna_id',
-                'pengguna.role as role'
-            );
     }
 }

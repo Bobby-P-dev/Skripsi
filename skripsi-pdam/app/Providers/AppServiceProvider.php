@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Laporan\User\LaporanPengguna;
+use App\Services\Laporan\User\LaporanPenggunaImpl;
 use Doctrine\DBAL\Types\Type;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -13,7 +15,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(
+            LaporanPengguna::class,
+            LaporanPenggunaImpl::class
+        );
     }
 
     /**
