@@ -77,11 +77,10 @@
                             data-tanggal="{{ \Carbon\Carbon::parse($laporan->created_at)->translatedFormat('d F Y H:i') }}">
                             Lihat detail →
                         </button>
-                        <div>
-                            <button class="show-modal rounded-full bg-blue-500 border px-3 py-3">
-                                Edit
-                            </button>
-                        </div>
+                        <!-- button edit -->
+                         <button class="show-modal rounded-full bg-blue-500 border px-3 py-3"
+                                data-id="{{ $laporan->laporan_uuid }}"> Edit
+                        </button>
                     </div>
                 </div>
             </div>

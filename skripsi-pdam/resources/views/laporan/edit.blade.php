@@ -1,37 +1,78 @@
-<div id="editLaporanModal" tabindex="-1" aria-labelledby="editLaporanModalLabel" aria-hidden="true"
-    class="fixed inset-0 z-50 flex hidden items-center justify-center overflow-y-auto overflow-x-hidden p-4 opacity-0 transition-all duration-300 ease-in-out scale-95">
-    <div class="relative w-full max-w-lg rounded-lg bg-white shadow-xl dark:bg-gray-800">
-        <div class="flex items-center justify-between rounded-t border-b p-4 dark:border-gray-600 md:p-5">
-            <h3 class="text-xl font-semibold text-gray-900 dark:text-white" id="editLaporanModalLabel">
-                Judul Modal Edit
-            </h3>
-            <button type="button" id="closeModalHeaderBtn"
-                class="ms-auto inline-flex h-8 w-8 items-center justify-center rounded-lg bg-transparent text-sm text-gray-400 hover:bg-gray-200 hover:text-gray-900 dark:hover:bg-gray-600 dark:hover:text-white"
-                aria-label="Close modal">
-                <svg class="h-3 w-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                </svg>
-                <span class="sr-only">Tutup modal</span>
-            </button>
+<div id="editLaporanModal">
+    @foreach ($laporans as $laporan)
+
+<div class="fixed z-10 inset-0 overflow-y-auto">
+    <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 transition-opacity">
+            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
 
-        <div class="p-4 md:p-5">
-            <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-                Konten untuk form edit akan ada di sini.
-            </p>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
 
-        </div>
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+            role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">Edit Laporan</h3>
+                        <div class="mt-2">
+                            <form action="{{ route('laporan.edit', $laporan->laporan_uuid) }}" method="POST">
+                                @csrf
+                                @method('PUT')
+                                <!-- Gambar -->
+                                <div>
+                                    
+                                </div>
+                                <div class="mb-4">
+                                    <label for="judul" class="block text-sm font-medium text-gray-700 mb-1">Judul
+                                        Laporan</label>
+                                    <input type="text" name="judul" id="judul" value="{{ $laporan->judul }}"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                        placeholder="Contoh: Pipa Bocor di Jalan Merdeka" required>
+                                </div>
 
-        <div class="flex items-center justify-end rounded-b border-t border-gray-200 p-4 dark:border-gray-600 md:p-5">
-            <button type="button" id="closeEditModalFooterBtn" {{-- Saya ganti ID agar lebih deskriptif --}}
-                class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-900 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:border-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white dark:focus:ring-gray-600">
-                Tutup
-            </button>
-            {{-- <button type="button" class="ms-3 rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Aksi Lain</button> --}}
+                                <div class="mb-4">
+                                    <label for="deskripsi" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
+                                    <textarea name="deskripsi" id="deskripsi" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none" placeholder="Jelaskan detail kerusakan atau masalah...">{{ $laporan->deskripsi }}</textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="lokasi" class="block text-sm font-medium text-gray-700 mb-1">Lokasi</label>
+                                    <input type="text" name="lokasi" id="lokasi" value="{{ $laporan->lokasi }}"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                        placeholder="Contoh: Jalan Merdeka No. 10" required>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="tingkat_urgensi" class="block text-sm font-medium text-gray-700 mb-1">Tingkat Urgensi</label>
+                                    <select name="tingkat_urgensi" id="tingkat_urgensi"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                                        <option value="tinggi" {{ $laporan->tingkat_urgensi == 'tinggi' ? 'selected' : '' }}>Tinggi</option>
+                                        <option value="sedang" {{ $laporan->tingkat_urgensi == 'sedang' ? 'selected' : '' }}>Sedang</option>
+                                        <option value="rendah" {{ $laporan->tingkat_urgensi == 'rendah' ? 'selected' : '' }}>Rendah</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                                    <select name="status" id="status"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                                        <option value="pending" {{ $laporan->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="proses" {{ $laporan->status == 'proses' ? 'selected' : '' }}>Proses</option>
+                                        <option value="selesai" {{ $laporan->status == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                    </select>
+                                </div>
+
+                                <div class="flex justify-end gap-2 mt-6">
+                                    <button type="button" onclick="this.closest('.fixed').classList.add('hidden')" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Batal</button>
+                                    <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded hover:bg-indigo-700">Simpan Perubahan</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
-<button id="buttonEditModal" class="show-modal rounded-full bg-blue-500 border px-3 py-3 m-5">
-    Edit
-</button>
+@endforeach
+</div>
