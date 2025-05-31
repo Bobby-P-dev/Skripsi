@@ -76,13 +76,15 @@ class LaporanController extends Controller
     {
         $laporans = $this->laporanPenggunaService->GetLaporanByUuid($laporan_uuid);
 
-        if (!$laporans) {
-            return redirect()->route('laporan.index')->withErrors(['error' => 'Laporan tidak ditemukan.']);
+
+        if ($laporans) {
+            return response()->json($laporans);
+        } else {
+            return response()->json(['message' => 'Laporan tidak ditemukan'], 404);
         }
-        return view('laporan.edit', compact('laporan'));
     }
 
-    public function editStore($laporan_uuid, LaporanCreateRequest $request)
+    public function update($laporan_uuid, LaporanCreateRequest $request)
     {
 
         DB::beginTransaction();
@@ -101,8 +103,6 @@ class LaporanController extends Controller
                 'deskripsi' => $validatedData['deskripsi'],
                 'lokasi' => $validatedData['lokasi'],
                 'foto_url' => $uploadFile,
-                'latitude' => $validatedData['latitude'],
-                'longitude' => $validatedData['longitude'],
             ];
 
             $laporan = $this->laporanPenggunaService->UpdateLaporan($laporan_uuid, $laporanUpdate);

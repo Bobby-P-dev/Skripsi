@@ -78,9 +78,12 @@
                             Lihat detail →
                         </button>
                         <!-- button edit -->
-                         <button class="show-modal rounded-full bg-blue-500 border px-3 py-3"
-                                data-id="{{ $laporan->laporan_uuid }}"> Edit
-                        </button>
+                        <div>
+                            <button class="show-modal rounded-full bg-blue-500 border px-3 py-3"
+                                data-id="{{ $laporan->laporan_uuid }}">
+                                Edit
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,94 +136,148 @@
     @include('laporan.edit')
     <script>
         //create modal
-        const openBtn = document.getElementById('openModalBtn');
-        const closeBtn = document.getElementById('closeModalBtn');
-        const modal = document.getElementById('buatLaporanModal');
+        document.addEventListener('DOMContentLoaded', () => {
+            const buatLaporanModalElement = document.getElementById('buatLaporanModal');
+            const openBuatLaporanBtns = document.getElementById('openModalBtn');
+            const closeBuatLaporanBtn = document.getElementById('closeModalBtn');
 
-        openBtn.addEventListener('click', () => {
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        });
+            openBuatLaporanBtns.addEventListener('click', () => {
+                if (buatLaporanModalElement) {
+                    buatLaporanModalElement.classList.add('flex');
+                    buatLaporanModalElement.classList.remove('hidden');
+                }
+            });
 
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
-        });
+            closeBuatLaporanBtn.addEventListener('click', () => {
+                if (buatLaporanModalElement) {
+                    buatLaporanModalElement.classList.add('hidden');
+                    buatLaporanModalElement.classList.remove('flex');
+                }
+            });
 
-
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('flex');
-                modal.classList.add('hidden');
+            if (buatLaporanModalElement) {
+                buatLaporanModalElement.addEventListener('click', (event) => {
+                    if (event.target === buatLaporanModalElement) {
+                        buatLaporanModalElement.classList.add('hidden');
+                        buatLaporanModalElement.classList.remove('flex');
+                    }
+                });
             }
-        });
 
-        //modal edit
-        document.addEventListener('DOMContentLoaded', function() {
-            let triggerElement = null;
-
-            const editModal = document.getElementById('editLaporanModal');
+            //edit
+            const editModalElement = document.getElementById('editLaporanModal');
             const openEditModalBtns = document.querySelectorAll('.show-modal');
             const closeModalHeaderBtn = document.getElementById('closeModalHeaderBtn');
             const closeEditModalFooterBtn = document.getElementById('closeEditModalFooterBtn');
-
-
+            let triggerElement = null;
             const animationDuration = 300;
 
-            if (!editModal) {
-                console.error('Elemen modal "editLaporanModal" tidak ditemukan.');
-                return;
-            }
+            if (editModalElement) {
+                const openEditModal = async function(event) {
+                    triggerElement = event.currentTarget;
+                    const laporanUuid = triggerElement.dataset.id;
 
-            const openModal = function(event) {
-                triggerElement = event.currentTarget;
+                    console.log('Tombol .show-modal diklik. UUID Laporan:', laporanUuid);
 
-                editModal.classList.remove('hidden');
-                editModal.removeAttribute('aria-hidden');
-                requestAnimationFrame(() => {
-                    editModal.classList.remove('opacity-0', 'scale-95');
-                });
-                editModal.focus();
-            };
+                    if (laporanUuid) {
+                        try {
+                            const response = await fetch(`/laporan/edit/${laporanUuid}`);
 
-            const closeModal = function() {
-                if (!editModal.classList.contains('hidden')) {
-                    editModal.classList.add('opacity-0', 'scale-95');
+                            if (!response.ok) {
+                                const errorData = await response.text();
+                                console.error('Gagal mengambil data laporan:', response.status, errorData);
+                                alert(`Gagal memuat detail laporan (Status: ${response.status}). Silakan coba lagi.`);
+                                return;
+                            }
 
-                    setTimeout(() => {
-                        editModal.classList.add('hidden');
-                        editModal.setAttribute('aria-hidden', 'true');
-                        if (triggerElement) {
-                            triggerElement.focus();
-                            triggerElement = null;
+                            const data = await response.json();
+
+                            const judulEditEl = document.getElementById('judul_edit');
+                            const deskripsiEditEl = document.getElementById('deskripsi_edit');
+                            const lokasiEditEl = document.getElementById('lokasi_edit');
+                            const currentFotoPreviewEl = document.getElementById('current_foto_preview');
+                            const fotoEditEl = document.getElementById('foto_edit');
+                            const hiddenUuidInputEl = document.getElementById('laporan_uuid_edit');
+                            const editFormEl = document.getElementById('editLaporanForm');
+
+                            if (judulEditEl) judulEditEl.value = data.judul || '';
+                            if (deskripsiEditEl) deskripsiEditEl.value = data.deskripsi || '';
+                            if (lokasiEditEl) lokasiEditEl.value = data.lokasi || '';
+
+                            if (currentFotoPreviewEl) {
+                                if (data.foto_url) {
+                                    currentFotoPreviewEl.src = data.foto_url;
+                                    currentFotoPreviewEl.classList.remove('hidden');
+                                } else {
+                                    currentFotoPreviewEl.classList.add('hidden');
+                                    currentFotoPreviewEl.src = '';
+                                }
+                            }
+                            if (fotoEditEl) fotoEditEl.value = null;
+
+                            if (hiddenUuidInputEl) {
+                                hiddenUuidInputEl.value = laporanUuid;
+                            }
+
+                            if (editFormEl) {
+                                editFormEl.action = `/laporan/update/${laporanUuid}`;
+                            }
+
+                            editModalElement.classList.remove('hidden');
+                            editModalElement.removeAttribute('aria-hidden');
+                            requestAnimationFrame(() => {
+                                editModalElement.classList.remove('opacity-0', 'scale-95');
+                            });
+                            editModalElement.focus();
+
+                        } catch (error) {
+                            console.error('Terjadi kesalahan saat mengambil atau memproses data laporan:', error.message, error.stack);
+                            alert('Terjadi kesalahan. Detail laporan tidak dapat dimuat.');
                         }
-                    }, animationDuration);
+                    } else {
+                        console.error('data-id (UUID Laporan) tidak ditemukan pada tombol .show-modal');
+                        alert('ID Laporan tidak ditemukan pada tombol.');
+                    }
+                };
+
+                const closeEditModal = function() {
+                    if (!editModalElement.classList.contains('hidden')) {
+                        editModalElement.classList.add('opacity-0', 'scale-95');
+                        setTimeout(() => {
+                            editModalElement.classList.add('hidden');
+                            editModalElement.setAttribute('aria-hidden', 'true');
+                            if (triggerElement) {
+                                try {
+                                    triggerElement.focus();
+                                } catch (e) {
+                                    // Kosongkan
+                                }
+                                triggerElement = null;
+                            }
+                        }, animationDuration);
+                    }
+                };
+
+                openEditModalBtns.forEach(function(btn) {
+                    btn.addEventListener('click', openEditModal);
+                });
+
+                if (closeModalHeaderBtn) {
+                    closeModalHeaderBtn.addEventListener('click', closeEditModal);
                 }
-            };
 
-            openEditModalBtns.forEach(function(btn) {
-                btn.addEventListener('click', openModal);
-            });
-
-            if (closeModalHeaderBtn) {
-                closeModalHeaderBtn.addEventListener('click', closeModal);
-            } else {
-                console.warn('Tombol tutup header "closeModalHeaderBtn" tidak ditemukan.');
-            }
-
-            if (closeEditModalFooterBtn) {
-                closeEditModalFooterBtn.addEventListener('click', closeModal);
-            } else {
-                console.warn('Tombol tutup footer "closeEditModalFooterBtn" tidak ditemukan.');
-            }
-
-            editModal.addEventListener('click', function(event) {
-                if (event.target === editModal) {
-                    closeModal();
+                if (closeEditModalFooterBtn) {
+                    closeEditModalFooterBtn.addEventListener('click', closeEditModal);
                 }
-            });
+
+                editModalElement.addEventListener('click', function(event) {
+                    if (event.target === editModalElement) {
+                        closeEditModal();
+                    }
+                });
+            }
         });
-
+        //batas
         const previewModal = document.getElementById('imagePreviewModal');
         const previewImg = document.getElementById('previewImage');
         const closePreview = document.getElementById('closeImagePreview');
