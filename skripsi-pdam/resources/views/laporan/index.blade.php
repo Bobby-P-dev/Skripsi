@@ -133,6 +133,29 @@
     @include('laporan.create')
     @include('laporan.edit')
     <script>
+        //create modal
+        const openBtn = document.getElementById('openModalBtn');
+        const closeBtn = document.getElementById('closeModalBtn');
+        const modal = document.getElementById('buatLaporanModal');
+
+        openBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        });
+
+        closeBtn.addEventListener('click', () => {
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        });
+
+
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.classList.remove('flex');
+                modal.classList.add('hidden');
+            }
+        });
+
         //modal edit
         document.addEventListener('DOMContentLoaded', function() {
             let triggerElement = null;
@@ -199,7 +222,6 @@
             });
         });
 
-        //preview gambar
         const previewModal = document.getElementById('imagePreviewModal');
         const previewImg = document.getElementById('previewImage');
         const closePreview = document.getElementById('closeImagePreview');
@@ -224,7 +246,7 @@
             }
         });
 
-        // modal card ini bob
+
         document.querySelectorAll('.detail-btn').forEach(btn => {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
