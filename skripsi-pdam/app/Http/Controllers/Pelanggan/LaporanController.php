@@ -86,13 +86,16 @@ class LaporanController extends Controller
 
     public function update($laporan_uuid, LaporanCreateRequest $request)
     {
-        $dataLama = $this->laporanPenggunaService->getLaporanByUuId($laporan_uuid);
-
-        if (!$dataLama) {
-            return redirect()->back()->withErrors(['error' => 'Laporan tidak ditemukan']);
-        }
-
         DB::beginTransaction();
+        $validatedData = $request->validated();
+        $laporanUpdate = [
+            'judul' => $validatedData['judul'],
+            'deskripsi' => $validatedData['deskripsi'],
+            'lokasi' => $validatedData['lokasi'],
+            'tingkat_urgensi' => $validatedData['tingkat_urgensi'],
+            'foto_url' => $validatedData['foto_url'],
+        ];
+
         try {
             $validatedData = $request->validated();
 
@@ -101,19 +104,8 @@ class LaporanController extends Controller
                 $uploadFile = Cloudinary::upload($request->file('foto_url')->getRealPath(), [
                     'folder' => 'laporan',
                 ])->getSecurePath();
-            } else {
-                $uploadFile = $dataLama->foto_url;
+                $laporanUpdate['foto_url'] = $uploadFile;
             }
-
-            $laporanUpdate = [
-                'judul' => $validatedData['judul'],
-                'deskripsi' => $validatedData['deskripsi'],
-                'lokasi' => $validatedData['lokasi'],
-                'foto_url' => $uploadFile,
-                'tingkat_urgensi' => $validatedData['tingkat_urgensi'],
-                'latitude' => $validatedData['latitude'],
-                'longitude' => $validatedData['longitude'],
-            ];
 
             $laporan = $this->laporanPenggunaService->UpdateLaporan($laporan_uuid, $laporanUpdate);
             if ($laporan) {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Laporan_Model;
+use App\Services\Laporan\Admin\LaporanAdmin;
 use App\View\Components\laporan;
 use DB;
 use Illuminate\Http\Client\Request;
@@ -11,15 +12,16 @@ use Illuminate\Support\Facades\Auth;
 
 class LaporanAdminController extends Controller
 {
+
+    protected LaporanAdmin $laporanAdminService;
+    public function __construct(LaporanAdmin $laporanAdminService)
+    {
+        $this->laporanAdminService = $laporanAdminService;
+        $this->middleware('auth');
+    }
     public function index()
     {
-        if (!auth()->check()) {
-            return redirect()->route('login')->withErrors(['login' => 'You must be logged in to view this page.']);
-        }
-        $laporanSaya = Laporan_Model::joinWithPengguna()->orderBy('laporan.created_at', 'desc')->get();
-
-        // opsi untuk paginasi mas
-        // $laporanSaya = Laporan_Model::joinWithPengguna()->orderBy('laporan.created_at', 'desc')->paginate(10);
+        $laporanSaya = $this->laporanAdminService->index();
 
         return view('admin.laporan-index', compact('laporanSaya'));
     }
@@ -32,10 +34,7 @@ class LaporanAdminController extends Controller
     {
         DB::beginTransaction();
         try {
-            $laporan->update([
-                'admin_id' => Auth::id(),
-                'status'   => 'diterima',
-            ]);
+            $this->laporanAdminService->accLaporan($laporan);
             DB::commit();
             return redirect()->back()->with('success', 'Laporan berhasil diterima.');
         } catch (\Exception $e) {
@@ -48,10 +47,7 @@ class LaporanAdminController extends Controller
     {
         DB::beginTransaction();
         try {
-            $laporan->update([
-                'admin_id' => Auth::id(),
-                'status' => 'ditolak',
-            ]);
+            $this->laporanAdminService->tolakLaporan($laporan);
             DB::commit();
             return redirect()->back()->with('success', 'Laporan berhasil ditolak.');
         } catch (\Exception $e) {

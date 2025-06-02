@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Laporan\Admin\LaporanAdmin;
+use App\Services\Laporan\Admin\LaporanAdminImpl;
 use App\Services\Laporan\User\LaporanPengguna;
 use App\Services\Laporan\User\LaporanPenggunaImpl;
 use Doctrine\DBAL\Types\Type;
@@ -17,7 +19,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(
             LaporanPengguna::class,
-            LaporanPenggunaImpl::class
+            LaporanPenggunaImpl::class,
+
+        );
+        $this->app->bind(
+            LaporanAdmin::class,
+            LaporanAdminImpl::class,
         );
     }
 
