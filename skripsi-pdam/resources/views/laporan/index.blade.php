@@ -195,6 +195,8 @@
                             const judulEditEl = document.getElementById('judul_edit');
                             const deskripsiEditEl = document.getElementById('deskripsi_edit');
                             const lokasiEditEl = document.getElementById('lokasi_edit');
+                            const latitudeEditEl = document.getElementById('latitude_edit'); // Pastikan ID ini ada di HTML jika Anda menggunakannya
+                            const longitudeEditEl = document.getElementById('longitude_edit'); // Pastikan ID ini ada di HTML jika Anda menggunakannya
                             const currentFotoPreviewEl = document.getElementById('current_foto_preview');
                             const fotoEditEl = document.getElementById('foto_edit');
                             const hiddenUuidInputEl = document.getElementById('laporan_uuid_edit');
@@ -203,6 +205,10 @@
                             if (judulEditEl) judulEditEl.value = data.judul || '';
                             if (deskripsiEditEl) deskripsiEditEl.value = data.deskripsi || '';
                             if (lokasiEditEl) lokasiEditEl.value = data.lokasi || '';
+
+                            // Jika Anda memiliki field latitude dan longitude di form edit:
+                            if (latitudeEditEl) latitudeEditEl.value = data.latitude || '';
+                            if (longitudeEditEl) longitudeEditEl.value = data.longitude || '';
 
                             if (currentFotoPreviewEl) {
                                 if (data.foto_url) {
@@ -221,6 +227,8 @@
 
                             if (editFormEl) {
                                 editFormEl.action = `/laporan/update/${laporanUuid}`;
+                            } else {
+                                console.error('Elemen form dengan ID "editLaporanForm" tidak ditemukan.');
                             }
 
                             editModalElement.classList.remove('hidden');

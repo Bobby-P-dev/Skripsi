@@ -86,16 +86,23 @@ class LaporanController extends Controller
 
     public function update($laporan_uuid, LaporanCreateRequest $request)
     {
+        $dataLama = $this->laporanPenggunaService->getLaporanByUuId($laporan_uuid);
+
+        if (!$dataLama) {
+            return redirect()->back()->withErrors(['error' => 'Laporan tidak ditemukan']);
+        }
 
         DB::beginTransaction();
-        $validatedData = $request->validated();
-        $uploadFile = null;
-
         try {
+            $validatedData = $request->validated();
+
+            // Jika ada file foto baru, upload dan gunakan yang baru, jika tidak gunakan foto lama
             if ($request->hasFile('foto_url')) {
                 $uploadFile = Cloudinary::upload($request->file('foto_url')->getRealPath(), [
                     'folder' => 'laporan',
                 ])->getSecurePath();
+            } else {
+                $uploadFile = $dataLama->foto_url;
             }
 
             $laporanUpdate = [
@@ -103,6 +110,9 @@ class LaporanController extends Controller
                 'deskripsi' => $validatedData['deskripsi'],
                 'lokasi' => $validatedData['lokasi'],
                 'foto_url' => $uploadFile,
+                'tingkat_urgensi' => $validatedData['tingkat_urgensi'],
+                'latitude' => $validatedData['latitude'],
+                'longitude' => $validatedData['longitude'],
             ];
 
             $laporan = $this->laporanPenggunaService->UpdateLaporan($laporan_uuid, $laporanUpdate);

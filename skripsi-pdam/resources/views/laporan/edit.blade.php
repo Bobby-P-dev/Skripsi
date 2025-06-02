@@ -4,7 +4,7 @@
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form id="editLaporanForm" method="post" action="" enctype="multipart/form-data"> {{-- Action akan diisi oleh JS, tambahkan enctype --}}
+            <form id="editLaporanForm" method="post" enctype="multipart/form-data"> {{-- Action akan diisi oleh JS, tambahkan enctype --}}
                 @csrf
                 @method('PATCH')
                 <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -19,7 +19,7 @@
                                 Edit Laporan
                             </h3>
                             <div class="mt-4 space-y-4">
-                                <input type="hidden" name="laporan_uuid_edit" id="laporan_uuid_edit">
+                                <input type="hidden" name="laporan_uuid" id="laporan_uuid_edit">
 
                                 <div>
                                     <label for="judul_edit" class="block text-sm font-medium text-gray-700">Judul Laporan</label>
@@ -36,7 +36,7 @@
                                 <div>
                                     <label for="foto_edit" class="block text-sm font-medium text-gray-700">Ganti Foto (Opsional)</label>
                                     <img id="current_foto_preview" src="" alt="Foto Saat Ini" class="mt-1 mb-2 h-48 w-full object-cover border border-gray-300 rounded-md hidden">
-                                    <input type="file" name="foto" id="foto_edit" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                                    <input type="file" name="foto_url" id="foto_edit" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                                     <small class="text-gray-500">Kosongkan jika tidak ingin mengubah foto.</small>
                                 </div>
                             </div>
