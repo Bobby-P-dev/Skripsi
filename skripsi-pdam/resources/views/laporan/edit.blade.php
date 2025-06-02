@@ -45,7 +45,7 @@
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Foto Laporan Saat Ini</label>
                         <img id="current_foto_preview" src="" alt="Foto Laporan" class="mt-2 h-48 w-full object-cover border rounded-md hidden">
-                        <input type="file" name="foto" id="foto_edit" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
+                        <input type="file" name="foto_url" id="foto_edit" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                         <small class="text-gray-500">Kosongkan jika tidak ingin mengubah foto laporan.</small>
                     </div>
 

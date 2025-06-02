@@ -86,24 +86,23 @@ class LaporanController extends Controller
 
     public function update($laporan_uuid, LaporanCreateRequest $request)
     {
-
         DB::beginTransaction();
         $validatedData = $request->validated();
-        $uploadFile = null;
+        $laporanUpdate = [
+            'judul' => $validatedData['judul'],
+            'deskripsi' => $validatedData['deskripsi'],
+            'lokasi' => $validatedData['lokasi'],
+            'tingkat_urgensi' => $validatedData['tingkat_urgensi'],
+            'foto_url' => $validatedData['foto_url'],
+        ];
 
         try {
             if ($request->hasFile('foto_url')) {
                 $uploadFile = Cloudinary::upload($request->file('foto_url')->getRealPath(), [
                     'folder' => 'laporan',
                 ])->getSecurePath();
+                $laporanUpdate['foto_url'] = $uploadFile;
             }
-
-            $laporanUpdate = [
-                'judul' => $validatedData['judul'],
-                'deskripsi' => $validatedData['deskripsi'],
-                'lokasi' => $validatedData['lokasi'],
-                'foto_url' => $uploadFile,
-            ];
 
             $laporan = $this->laporanPenggunaService->UpdateLaporan($laporan_uuid, $laporanUpdate);
             if ($laporan) {

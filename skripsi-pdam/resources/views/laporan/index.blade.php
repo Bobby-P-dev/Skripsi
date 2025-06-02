@@ -199,6 +199,7 @@
                             const judulEditEl = document.getElementById('judul_edit');
                             const deskripsiEditEl = document.getElementById('deskripsi_edit');
                             const lokasiEditEl = document.getElementById('lokasi_edit');
+                            const urgensi_edit = document.getElementById('urgensi_edit');
                             const currentFotoPreviewEl = document.getElementById('current_foto_preview');
                             const fotoEditEl = document.getElementById('foto_edit');
                             const hiddenUuidInputEl = document.getElementById('laporan_uuid_edit');
@@ -208,6 +209,9 @@
                             if (judulEditEl) judulEditEl.value = data.judul || '';
                             if (deskripsiEditEl) deskripsiEditEl.value = data.deskripsi || '';
                             if (lokasiEditEl) lokasiEditEl.value = data.lokasi || '';
+                            if (urgensi_edit && data.tingkat_urgensi) {
+                                urgensi_edit.value = data.tingkat_urgensi;
+                            }
 
                             if (currentFotoPreviewEl) {
                                 if (data.foto_url) {
