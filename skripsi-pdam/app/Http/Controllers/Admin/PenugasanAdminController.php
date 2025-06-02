@@ -7,11 +7,18 @@ use App\Http\Requests\PenuggasanCreateRequest;
 use App\Models\Laporan_Model;
 use App\Models\Pengguna_Model;
 use App\Models\Penugasan_Model;
+use App\Services\Penugasan\Admin\PenugasanAdmin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class PenugasanAdminController extends Controller
 {
+    protected PenugasanAdmin $penugasanAdminService;
+    public function __construct(PenugasanAdmin $penugasanAdminService)
+    {
+        $this->penugasanAdminService = $penugasanAdminService;
+        $this->middleware('auth');
+    }
     public function CreateIndex($laporan_uuid)
     {
         $laporan = Laporan_Model::where('uuid', $laporan_uuid)
@@ -28,24 +35,9 @@ class PenugasanAdminController extends Controller
         DB::beginTransaction();
         try {
 
-            $laporan = Laporan_Model::where('laporan_uuid', $request->input('laporan_uuid'))->first();
+            $validatedData = $request->validated();
 
-
-            if (!$laporan) {
-                DB::rollBack();
-                return redirect()->back()->withInput()->withErrors(['laporan_uuid' => 'Laporan yang dipilih tidak valid atau tidak ditemukan.']);
-            }
-
-            $laporan->status = 'ditugaskan';
-            $laporan->save();
-
-            Penugasan_Model::create([
-                'laporan_uuid'  => $laporan->laporan_uuid,
-                'teknisi_id'    => $request->input('teknisi_id'),
-                'admin_id'      => Auth::id(),
-                'tenggat_waktu' => $request->input('tenggat_waktu'),
-                'catatan'       => $request->input('catatan'),
-            ]);
+            $this->penugasanAdminService->store($validatedData);
 
             DB::commit();
 
