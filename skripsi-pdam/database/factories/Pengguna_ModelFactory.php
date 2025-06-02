@@ -16,16 +16,34 @@ class Pengguna_ModelFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    protected $model = Pengguna_Model::class;
+
     public function definition(): array
     {
         return [
-            'nama' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
+            'nama' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(), // Penting: unique()
             'password' => Hash::make('qwerty123'),
-            'no_telepon' => fake()->unique()->phoneNumber(),
-            'alamat' => fake()->address(),
-            'peran' => fake()->randomElement(['admin', 'teknisi', 'pelanggan']),
-            'foto_profil' => fake()->imageUrl(200, 200, 'people'),
+            'no_telepon' => $this->faker->unique()->phoneNumber(),
+            'alamat' => $this->faker->address(),
+            'peran' => $this->faker->randomElement(['admin', 'teknisi', 'pelanggan']),
+            'foto_profil' => $this->faker->imageUrl(200, 200, 'people'),
         ];
+    }
+
+    // Opsional: States untuk peran agar lebih mudah
+    public function admin()
+    {
+        return $this->state(fn(array $attributes) => ['peran' => 'admin']);
+    }
+
+    public function teknisi()
+    {
+        return $this->state(fn(array $attributes) => ['peran' => 'teknisi']);
+    }
+
+    public function pelanggan()
+    {
+        return $this->state(fn(array $attributes) => ['peran' => 'pelanggan']);
     }
 }

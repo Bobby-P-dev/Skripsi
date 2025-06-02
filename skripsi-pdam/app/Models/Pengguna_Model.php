@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+
 class Pengguna_Model extends Authenticatable
 {
     use HasFactory;
@@ -17,12 +18,12 @@ class Pengguna_Model extends Authenticatable
         'peran',
         'foto_profil',
     ];
-
     protected $table = 'pengguna';
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
     protected $primaryKey = 'pengguna_id';
+    public $incrementing = true;
+    protected $keyType = 'int';
 
 
     public function laporan()
