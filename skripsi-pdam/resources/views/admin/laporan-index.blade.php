@@ -15,8 +15,8 @@
         <!-- Cards Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
 
-            @if($laporanSaya && count($laporanSaya) > 0)
-            @foreach ($laporanSaya as $laporan)
+            @if($laporanSaya['laporan'] && count($laporanSaya['laporan']) > 0)
+            @foreach ($laporanSaya['laporan'] as $laporan)
             <!-- Card 1 -->
             <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col">
                 <!-- Gambar -->
@@ -96,8 +96,7 @@
                             <button
                                 type="button"
                                 class="open-penugasan-modal-btn rounded-full border px-2 py-2 bg-blue-500 text-white"
-                                data-laporan-uuid="{{ $laporan->getKey() }}"
-                                data-laporan-judul="{{ $laporan->judul }}">
+                                data-laporan-uuid="{{ $laporan->laporan_uuid }}">
                                 Buat Penugasan
                             </button>
                             @elseif ($laporan->status === 'ditolak')

@@ -9,15 +9,21 @@ class PenuggasanCreateRequest extends FormRequest
 {
     public function authorize()
     {
-        return Auth::check() && Auth::user()->role === 'admin';
+        if (!Auth::check()) {
+            return false;
+        }
+        $user = Auth::user();
+
+        return $user->peran === 'admin';
     }
 
     public function rules()
     {
         return [
-            'laporan_uuid'      => 'required|uuid|exists:laporan,uuid',
-            'teknisi_id'        => 'required|exists:users,id', // Asumsi teknisi adalah user dengan role teknisi
-            'tenggat_waktu'     => 'required|date|after:now',
+            'laporan_uuid'      => 'required|uuid|exists:laporan,laporan_uuid',
+            'teknisi_id'        => 'required|exists:pengguna,pengguna_id|integer',
+            'admin_id'          => 'required|integer|exists:pengguna,pengguna_id',
+            'tenggat_waktu'     => 'required|date|after_or_equal:now',
             'catatan'           => 'nullable|string|max:500',
         ];
     }
@@ -38,7 +44,7 @@ class PenuggasanCreateRequest extends FormRequest
     protected function prepareForValidation()
     {
         $this->merge([
-            'admin_id' => Auth::id() // Otomatis isi admin_id dengan user yang login
+            'admin_id' => Auth::id()
         ]);
     }
 }

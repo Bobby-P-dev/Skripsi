@@ -3,27 +3,77 @@
 namespace App\Services\Penugasan\Admin;
 
 use App\Models\Laporan_Model;
+use App\Models\Pengguna_Model;
 use App\Models\Penugasan_Model;
+use Illuminate\Support\Facades\Log;
 
 class PenugasanAdminImpl implements PenugasanAdmin
 {
-    public function store(array $penugasan)
+
+    public function create(string $laporan_uuid)
     {
-        Penugasan_Model::store([
-            'laporan_uuid' => $penugasan['laporan_uuid'],
-            'pengguna_id' => $penugasan['teknisi_id'],
-            'admin_id'    => $penugasan['admin_id'] ?? auth()->id(),
-            'tenggat_waktu' => $penugasan['tenggat_waktu'],
-            'catatan'     => $penugasan['catatan'] ?? null
-        ]);
-        Laporan_Model::where('laporan_uuid', $penugasan['laporan_uuid'])
-            ->update(['status' => 'ditugaskan']);
+        $user = Pengguna_Model::where('role', 'teknisi')->select('pengguna_id', 'nama')
+            ->orderBy('nama', 'asc')
+            ->get();
+
+        if ($user->isEmpty()) {
+            throw new \Exception('Teknisi tidak ditemukan');
+        }
+        try {
+            $laporan = Laporan_Model::where('laporan_uuid', $laporan_uuid)->firstOrFail();
+        } catch (\Exception $e) {
+            throw new \Exception("Laporan dengan UUID '{$laporan_uuid}' tidak ditemukan.");
+        }
+        return [
+            'user' => $user,
+            'laporan' => $laporan,
+        ];
+    }
+
+
+    public function store(array $data)
+    {
+        Log::info('PenugasanAdminService@store: Method dipanggil dengan data:', $data);
+        try {
+
+            $penugasan = Penugasan_Model::create([
+                'laporan_uuid'  => $data['laporan_uuid'],
+                'teknisi_id'    => $data['teknisi_id'],
+                'admin_id'      => $data['admin_id'],
+                'tenggat_waktu' => $data['tenggat_waktu'],
+                'catatan'       => $data['catatan'] ?? null,
+            ]);
+
+            Log::info('PenugasanAdminService@store: Hasil Penugasan_Model::create():', $penugasan ? $penugasan->toArray() : ['hasil' => 'null atau false']);
+
+            if ($penugasan) {
+                Laporan_Model::where('laporan_uuid', $data['laporan_uuid'])
+                    ->update(['status' => 'ditugaskan']);
+            }
+
+            return $penugasan;
+        } catch (\Exception $e) {
+            Log::error('PenugasanAdminService@store: Terjadi kesalahan saat menyimpan penugasan:', [
+                'error' => $e->getMessage(),
+                'data' => $data,
+            ]);
+            throw $e;
+        }
     }
 
     public function index()
     {
-        return Penugasan_Model::with(['pengguna' => function ($query) {
-            $query->select('pengguna_id', 'nama', 'foto_profil');
-        }])->get();
+        $penugasans = Penugasan_Model::with([
+            'teknisi' => function ($query) {
+                $query->select('pengguna_id', 'nama');
+            },
+            'laporan' => function ($query) {
+                $query->select('laporan_uuid', 'judul');
+            }
+        ])
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return $penugasans;
     }
 }

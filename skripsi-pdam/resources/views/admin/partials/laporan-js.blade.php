@@ -1,4 +1,35 @@
 <script>
+    //modal create open-penugasan-modal-btn
+    const openPenugasanModalBtns = document.querySelectorAll('.open-penugasan-modal-btn');
+    const penugasanModal = document.getElementById('penugasan-modal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    openPenugasanModalBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const laporanUuid = this.dataset.laporanUuid;
+            const inputLaporanUuid = document.getElementById('data-laporan-uuid')
+            if (inputLaporanUuid) {
+                inputLaporanUuid.value = laporanUuid;
+            } else {
+                console.error('Input dengan ID "data-laporan-uuid" tidak ditemukan.');
+            }
+
+            penugasanModal.classList.remove('hidden');
+            penugasanModal.classList.add('flex');
+        });
+    });
+
+    closeModalBtn.addEventListener('click', function() {
+        penugasanModal.classList.add('hidden');
+        penugasanModal.classList.remove('flex');
+    });
+    penugasanModal.addEventListener('click', function(e) {
+        if (e.target === this) {
+            this.classList.add('hidden');
+            this.classList.remove('flex');
+        }
+    });
+
     //preview gambar
     const previewModal = document.getElementById('imagePreviewModal');
     const previewImg = document.getElementById('previewImage');

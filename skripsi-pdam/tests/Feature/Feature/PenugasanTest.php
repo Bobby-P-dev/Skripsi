@@ -20,31 +20,35 @@ class PenugasanTest extends TestCase
     public function test_penugasan(): void
     {
 
-        $admin = Pengguna_Model::factory()->admin()->create([
-            // Menggunakan state admin() dari factory jika ada,
-            // atau 'peran' => 'admin' jika tidak ada state
-            'nama' => 'Super Admin Test',
-            // Email akan di-generate unik oleh Pengguna_ModelFactory
+        $admin = Pengguna_Model::factory()->create([
+            'peran' => 'admin',
+            'nama' => 'Admin Otomatis',
+            'email' => 'admin_auto@example.com', // Pastikan email unik
         ]);
-        $adminIdOtomatis = $admin->pengguna_id; // Ambil ID (pengguna_id)
+        // Ambil ID admin yang di-generate
+        $adminIdOtomatis = $admin->pengguna_id; // Asumsi primary key adalah pengguna_id
 
-        // Membuat user teknisi
-        $teknisi = Pengguna_Model::factory()->teknisi()->create([
-            // Menggunakan state teknisi() dari factory jika ada,
-            // atau 'peran' => 'teknisi' jika tidak ada state
-            'nama' => 'Teknisi Handal Test',
-            // Email akan di-generate unik oleh Pengguna_ModelFactory
+        // Membuat user teknisi dengan peran spesifik
+        // ID (pengguna_id) akan di-generate otomatis
+        $teknisi = Pengguna_Model::factory()->create([
+            'peran' => 'teknisi',
+            'nama' => 'Teknisi Otomatis',
+            'email' => 'teknisi_auto@example.com', // Pastikan email unik
         ]);
-        $teknisiIdOtomatis = $teknisi->pengguna_id; // Ambil ID (pengguna_id)
+        // Ambil ID teknisi yang di-generate
+        $teknisiIdOtomatis = $teknisi->pengguna_id;
 
         // Membuat data laporan.
         // laporan_uuid dan field lain akan diisi oleh Laporan_ModelFactory.
+        // Kita hanya perlu memastikan status awalnya sesuai untuk skenario penugasan.
         $laporan = Laporan_Model::factory()->create([
-            'status' => 'tertunda', // Pastikan status awal sesuai untuk skenario
+            'status' => 'pending', // Status awal spesifik jika diperlukan untuk test,
+            // atau biarkan factory yang menentukan jika sudah sesuai.
         ]);
-        $laporanUuidOtomatis = $laporan->laporan_uuid; // Ambil UUID
+        // Ambil UUID laporan yang di-generate
+        $laporanUuidOtomatis = $laporan->laporan_uuid;
 
-        // Data yang akan dikirim untuk membuat penugasan
+        // Data yang akan dikirim (payload)
         $penugasanData = [
             'laporan_uuid' => $laporanUuidOtomatis,
             'teknisi_id' => $teknisiIdOtomatis,
@@ -53,21 +57,21 @@ class PenugasanTest extends TestCase
         ];
 
         // 2. Aksi
-        $response = $this->actingAs($admin, 'web') // Login sebagai $admin, tentukan guard jika perlu
+        $response = $this->actingAs($admin) // Login sebagai $admin
             ->post(route('penugasan.store'), $penugasanData);
 
-        // 3. Asersi (Verifikasi)
+        // 3. Asersi
         $response->assertRedirect(route('penugasan.index'));
         $response->assertSessionHas('success', 'Penugasan berhasil dibuat.');
 
-        $this->assertDatabaseHas('penugasan', [ // Sesuaikan nama tabel jika berbeda ('penugasans'?)
+        $this->assertDatabaseHas('penugasan', [
             'laporan_uuid' => $laporanUuidOtomatis,
             'teknisi_id' => $teknisiIdOtomatis,
             'admin_id' => $adminIdOtomatis,
             'catatan' => $penugasanData['catatan'],
         ]);
 
-        $this->assertDatabaseHas('laporan', [ // Sesuaikan nama tabel jika berbeda ('laporans'?)
+        $this->assertDatabaseHas('laporan', [
             'laporan_uuid' => $laporanUuidOtomatis,
             'status' => 'ditugaskan', // Status akhir setelah penugasan
         ]);

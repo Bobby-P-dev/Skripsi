@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\PenugasanAdminController;
 use App\Http\Controllers\Pelanggan\LaporanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\PenggunaAdminController;
+use App\Services\Penugasan\Admin\PenugasanAdmin;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,8 +43,11 @@ Route::prefix('admin')->middleware(['role.admin'])->group(function () {
     Route::put('/laporan/{laporan}/tolak', [LaporanAdminController::class, 'tolakLaporan'])->name('laporan.tolak');
     Route::put('/laporan/{laporan}/konfirmasi', [LaporanAdminController::class, 'accLaporan'])->name('laporan.konfirmasi');
     Route::get('/teknisi', [PenggunaAdminController::class, 'teknisiGetOption'])->name('teknisi.option');
+
+    Route::get('/laporan/penugasan', [PenugasanAdmin::class, 'create'])->name('penugasan.show');
+    Route::get('/laporan/penugasan', [PenugasanAdminController::class, 'index'])->name('penugasan.index');
+    Route::post('/laporan/penugasan/create', [PenugasanAdminController::class, 'store'])->name('penugasan.store');
 });
-Route::post('/laporan/penugasan/create', [PenugasanAdminController::class, 'store'])->name('penugasan.create');
 
 // Route::get('/laporan/home/admin', [LaporanAdminController::class, 'index'])->name('laporan.admin');
 // Route::get('/laporan/validate/admin', [LaporanAdminController::class, 'accLaporan'])->name('laporan.show');

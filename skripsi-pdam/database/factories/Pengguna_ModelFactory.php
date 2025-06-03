@@ -16,7 +16,7 @@ class Pengguna_ModelFactory extends Factory
      *
      * @return array<string, mixed>
      */
-    protected $model = Pengguna_Model::class;
+
 
     public function definition(): array
     {
