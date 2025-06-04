@@ -8,9 +8,17 @@
         <div>
             <form action="{{ route('penugasan.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="text" class="" id="data-laporan-uuid" name="laporan_uuid" value="">
-                <input type="text" class="" name="admin_id" value="{{ Auth::id() }}">
-                <input type="text" class="" name="catatan" placeholder="Catatan untuk petugas" required>
+                <div>
+                    <input type="text" class="hidden" id="data-laporan-uuid" name="laporan_uuid" value="" required>
+                </div>
+                <div>
+
+                    <input type="text" name="admin_id" class="hidden" value="{{ Auth::id() }}">
+                </div>
+                <div>
+                    <label for="catatan">Catatan</label>
+                    <input type="text" class="" name="catatan" placeholder="Catatan untuk petugas" required>
+                </div>
                 <div class="mb-4">
                     <label for="modalTenggatWaktu" class="block text-sm font-medium text-gray-700 mb-1">
                         Tenggat Waktu <span class="text-red-500">*</span>
@@ -27,18 +35,16 @@
                     <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                     @enderror
                 </div>
+
                 <select id="alpineTeknisiId" name="teknisi_id" required
                     class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md @error('teknisi_id') border-red-500 @enderror">
-                    <option value="">-- Pilih Teknisi --</option>
                     @if(isset($laporanSaya['teknisi']) && $laporanSaya['teknisi']->count() > 0)
                     @foreach ($laporanSaya['teknisi'] as $teknisi)
-                    <option value="{{ $teknisi->id }}" {{ old('teknisi_id') == $teknisi->id ? 'selected' : '' }}>
-                        {{ $teknisi->id }}
+                    <option value="{{ $teknisi->pengguna_id }}" {{ old('teknisi_id') == $teknisi->pengguna_id ? 'selected' : '' }}>
                         {{ $teknisi->nama }}
                     </option>
                     @endforeach
                     @else
-                    <option value="" disabled>Tidak ada teknisi tersedia</option>
                     @endif
                 </select>
                 <button type="submit" class="border rounded-xl">submit</button>

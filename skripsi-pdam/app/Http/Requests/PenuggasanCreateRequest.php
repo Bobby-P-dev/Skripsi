@@ -39,12 +39,4 @@ class PenuggasanCreateRequest extends FormRequest
             'tenggat_waktu.after' => 'Tenggat waktu harus setelah waktu sekarang.',
         ];
     }
-
-    // Prepare the data for validation
-    protected function prepareForValidation()
-    {
-        $this->merge([
-            'admin_id' => Auth::id()
-        ]);
-    }
 }

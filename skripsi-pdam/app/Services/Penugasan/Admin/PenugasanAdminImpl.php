@@ -33,18 +33,9 @@ class PenugasanAdminImpl implements PenugasanAdmin
 
     public function store(array $data)
     {
-        Log::info('PenugasanAdminService@store: Method dipanggil dengan data:', $data);
         try {
-
-            $penugasan = Penugasan_Model::create([
-                'laporan_uuid'  => $data['laporan_uuid'],
-                'teknisi_id'    => $data['teknisi_id'],
-                'admin_id'      => $data['admin_id'],
-                'tenggat_waktu' => $data['tenggat_waktu'],
-                'catatan'       => $data['catatan'] ?? null,
-            ]);
-
-            Log::info('PenugasanAdminService@store: Hasil Penugasan_Model::create():', $penugasan ? $penugasan->toArray() : ['hasil' => 'null atau false']);
+            Log::info('Memanggil Penugasan_Model::create', $data);
+            $penugasan = Penugasan_Model::create($data);
 
             if ($penugasan) {
                 Laporan_Model::where('laporan_uuid', $data['laporan_uuid'])

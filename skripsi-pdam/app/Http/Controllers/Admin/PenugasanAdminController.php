@@ -17,6 +17,7 @@ class PenugasanAdminController extends Controller
         $this->penugasanAdminService = $penugasanAdminService;
         $this->middleware('auth');
     }
+
     public function index()
     {
         $penugasans = $this->penugasanAdminService->index();
@@ -38,24 +39,20 @@ class PenugasanAdminController extends Controller
         DB::beginTransaction();
         try {
             $validatedData = $request->validated();
-
-            Log::info('PenugasanAdminController@store: Data tervalidasi dari FormRequest:', $validatedData);
-
-            $dataToStore = array_merge($validatedData,);
-
-            Log::info('PenugasanAdminController@store: Data yang akan dikirim ke service:', $dataToStore);
-
-            $penugasan = $this->penugasanAdminService->store($dataToStore);
+            $dataToStore = [
+                'laporan_uuid' => $validatedData['laporan_uuid'],
+                'teknisi_id' => $validatedData['teknisi_id'],
+                'admin_id' => Auth::id(),
+                'tenggat_waktu' => $validatedData['tenggat_waktu'],
+                'catatan' => $validatedData['catatan'],
+            ];
+            Log::info('Data akan dikirim ke service:', $dataToStore);
+            $penugasan =  $this->penugasanAdminService->store($dataToStore);
 
             if ($penugasan) {
-                Log::info('PenugasanAdminController@store: Penugasan berhasil dibuat oleh service, ID Penugasan:', ['id' => $penugasan->id ?? null]);
-            } else {
-                Log::warning('PenugasanAdminController@store: Service store tidak mengembalikan objek penugasan atau mengembalikan null.');
+                DB::commit();
+                return back()->with('success', 'Penugasan berhasil dibuat.');
             }
-
-            DB::commit();
-
-            return back()->with('success', 'Penugasan berhasil dibuat.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Gagal membuat penugasan: ' . $e->getMessage());

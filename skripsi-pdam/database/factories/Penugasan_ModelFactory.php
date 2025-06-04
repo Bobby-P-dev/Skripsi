@@ -18,9 +18,9 @@ class Penugasan_ModelFactory extends Factory
     public function definition(): array
     {
         return [
-            'laporan_uuid' => $this->faker->uuid,
-            'teknisi_id' => Pengguna_Model::factory()->create(['peran' => 'teknisi']),
-            'admin_id' => Pengguna_Model::factory()->create(['peran' => 'admin']),
+            'laporan_uuid' => \App\Models\Laporan_Model::inRandomOrder()->first()->laporan_uuid,
+            'teknisi_id' => Pengguna_Model::where('peran', 'teknisi')->inRandomOrder()->first()->pengguna_id,
+            'admin_id' => Pengguna_Model::where('peran', 'admin')->inRandomOrder()->first()->pengguna_id,
             'tenggat_waktu' => $this->faker->dateTimeBetween('now', '+1 month'),
             'catatan' => $this->faker->paragraph(2),
             'created_at' => now(),

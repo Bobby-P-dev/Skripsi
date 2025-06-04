@@ -14,7 +14,7 @@ class LaporanAdminImpl implements LaporanAdmin
         }])->get();
 
         $teknisi = Pengguna_Model::where('peran', 'teknisi')->select('pengguna_id', 'nama')
-            ->orderBy('nama', 'asc')
+            ->orderBy('pengguna_id', 'asc')
             ->get();
 
         return [
