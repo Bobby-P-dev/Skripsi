@@ -29,7 +29,7 @@ class LaporanPenggunaImpl implements LaporanPengguna
             return $laporan->fresh();
         }
 
-        return null;
+        return $laporan;
     }
 
     public function getLaporanByUuId(string $laporan_uuid): ?Laporan_Model

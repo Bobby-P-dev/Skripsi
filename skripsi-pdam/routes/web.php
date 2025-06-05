@@ -2,6 +2,7 @@
 
 
 use App\Http\Controllers\Admin\LaporanAdminController;
+use App\Http\Controllers\Admin\LaporanTestController;
 use App\Http\Controllers\Admin\PenugasanAdminController;
 use App\Http\Controllers\Pelanggan\LaporanController;
 use App\Http\Controllers\ProfileController;
@@ -25,7 +26,7 @@ Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index
 Route::get('/laporan/create', [LaporanController::class, 'create'])->name('laporan.create');
 Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.store')->middleware('auth');
 Route::get('/laporan/edit/{laporan_uuid}', [LaporanController::class, 'edit'])->name('laporan.edit');
-Route::patch('/laporan/update/{laporan_uuid}', [LaporanController::class, 'update'])->name('laporan.update');
+Route::put('/laporan/update/{laporan_uuid}', [LaporanController::class, 'update'])->name('laporan.update');
 
 //---
 Route::Get('/laporan/show/update{id}', [LaporanController::class, 'showUpdate'])->name('laporan.showUpdate');

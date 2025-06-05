@@ -97,5 +97,7 @@
             this.classList.add('hidden');
             this.classList.remove('flex');
         }
+
+        //sse
     });
 </script>
