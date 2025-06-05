@@ -4,37 +4,37 @@
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
 
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form id="editLaporanForm" method="POST" action="{{ route('laporan.update', [$laporan->laporan_uuid] ) }}" enctype="multipart/form-data">
+            <form id="editLaporanForm" method="POST" action="" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
                 <div class="bg-white px-6 pt-6 pb-4">
                     <h3 class="text-lg font-semibold text-gray-800 mb-4" id="modal-edit-title">Edit Laporan</h3>
-                    <input type="hidden" name="laporan_uuid" id="laporan_uuid_edit" value="{{ $laporan->laporan_uuid }}">
+                    <input type="hidden" name="laporan_uuid" id="laporan_uuid_edit" value="">
                     <!-- Judul -->
                     <div class="mb-4">
                         <label for="judul_edit" class="block text-sm font-medium text-gray-700">Judul</label>
-                        <input type="text" name="judul" value="{{ $laporan->judul }}" id="judul_edit" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <input type="text" name="judul" value="" id="judul_edit" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
 
                     <!-- Deskripsi -->
                     <div class="mb-4">
                         <label for="deskripsi_edit" class="block text-sm font-medium text-gray-700">Deskripsi</label>
-                        <textarea name="deskripsi" id="deskripsi_edit" rows="3" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">{{ $laporan->deskripsi }}</textarea>
+                        <textarea name="deskripsi" id="deskripsi_edit" rows="3" class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
                     </div>
 
                     <!-- Lokasi -->
                     <div class="mb-4">
                         <label for="lokasi_edit" class="block text-sm font-medium text-gray-700">Lokasi</label>
-                        <input type="text" value="{{ $laporan->lokasi }}" name="lokasi" id="lokasi_edit" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <input type="text" value="" name="lokasi" id="lokasi_edit" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
                     </div>
 
                     <!-- Urgensi -->
                     <div class="mb-4">
                         <label for="urgensi_edit" class="block text-sm font-medium text-gray-700">Tingkat Urgensi</label>
                         <select name="tingkat_urgensi" id="urgensi_edit" required class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                            <option value="tinggi" {{ $laporan->tingkat_urgensi == 'tinggi' ? 'selected' : '' }}>Tinggi</option>
-                            <option value="sedang" {{ $laporan->tingkat_urgensi == 'sedang' ? 'selected' : '' }}>Sedang</option>
-                            <option value="rendah" {{ $laporan->tingkat_urgensi == 'rendah' ? 'selected' : '' }}>Rendah</option>
+                            <option value="tinggi">Tinggi</option>
+                            <option value="sedang">Sedang</option>
+                            <option value="rendah">Rendah</option>
                         </select>
                     </div>
 
@@ -44,7 +44,7 @@
                         <!-- !!!!!! -->
                         <!-- foto tidak terbaca -->
                         @if($laporan->foto_url)
-                        <img id="current_foto_preview" src="{{ $laporan->foto_url }}" alt="Foto Laporan Saat Ini" class="mt-2 h-48 w-full object-cover border rounded-md">
+                        <img id="current_foto_preview" src="" alt="Foto Laporan Saat Ini" class="mt-2 h-48 w-full object-cover border rounded-md">
                         @else
                         <img id="current_foto_preview" src="{{ asset('images/tirta-bg.jpeg') }}" alt="Tidak ada foto" class="mt-2 h-48 w-full object-cover border rounded-md hidden"> {{-- Atau jangan tampilkan sama sekali jika tidak ada placeholder --}}
                         @endif
