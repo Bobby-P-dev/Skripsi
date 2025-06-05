@@ -15,6 +15,12 @@ class PenggunaAdminController extends Controller
         return response()->json($users);
     }
 
+    public function index()
+    {
+        $users = Pengguna_Model::select('pengguna_id', 'nama', 'email', 'alamat', 'no_telepon', 'peran', 'foto_profil')->paginate(7);
+
+        return view('admin.data-pengguna-index', compact('users'));
+    }
 
     public function GetUserById($id)
     {
