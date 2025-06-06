@@ -82,24 +82,40 @@
 
                         <div class="flex justify-end gap-2">
                             @if ($laporan->status === 'pending')
-                            <form action="{{ route('laporan.tolak', ['laporan' => $laporan->getKey()]) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('laporan.tolak', ['laporan' => $laporan->getKey()]) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" class="rounded-xl border bg-red-500 py-2 px-2 text-white">Tolak</button>
+                                <button type="submit"
+                                    class="inline-flex items-center gap-1 rounded-lg border border-red-500 bg-red-50 text-red-600 hover:bg-red-100 px-4 py-1.5 text-sm font-semibold transition">
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                    </svg> -->
+                                    Tolak
+                                </button>
                             </form>
 
-                            <form action="{{ route('laporan.konfirmasi', ['laporan' => $laporan->getKey()]) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('laporan.konfirmasi', ['laporan' => $laporan->getKey()]) }}" method="POST">
                                 @csrf
                                 @method('PUT')
-                                <button type="submit" class="rounded-xl border bg-green-500 py-2 px-2 text-white">Konfirmasi</button>
+                                <button type="submit"
+                                    class="inline-flex items-center gap-1 rounded-lg border border-green-500 bg-green-50 text-green-600 hover:bg-green-100 px-4 py-1.5 text-sm font-semibold transition">
+                                    <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                    </svg> -->
+                                    Konfirmasi
+                                </button>
                             </form>
                             @elseif ($laporan->status === 'diterima')
                             <button
                                 type="button"
-                                class="open-penugasan-modal-btn rounded-full border px-2 py-2 bg-blue-500 text-white"
+                                class="open-penugasan-modal-btn inline-flex items-center gap-1 rounded-lg border border-blue-500 bg-blue-50 text-blue-600 hover:bg-blue-100 px-4 py-1.5 text-sm font-semibold transition"
                                 data-laporan-uuid="{{ $laporan->laporan_uuid }}">
+                                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                </svg> -->
                                 Buat Penugasan
                             </button>
+
                             @elseif ($laporan->status === 'ditolak')
                             @endif
                         </div>

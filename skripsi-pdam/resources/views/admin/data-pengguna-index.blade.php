@@ -44,7 +44,7 @@
                         <td class="px-6 py-4 whitespace-nowrap">
                             <div class="flex-shrink-0 h-12 w-12">
                                 @if ($user->foto_profil)
-                                <img class="h-12 w-12 rounded-full object-cover" src="{{ asset('storage/' . $user->foto_profil) }}" alt="Foto Profil {{ $user->nama }}">
+                                <img class="h-12 w-12 rounded-full object-cover" src="{{ $user->foto_profil }}" alt="Foto Profil {{ $user->nama }}">
                                 @else
                                 <img class="h-12 w-12 rounded-full object-cover" src="https://ui-avatars.com/api/?name={{ urlencode($user->nama) }}&background=random&color=fff" alt="Avatar {{ $user->nama }}">
                                 @endif
@@ -92,11 +92,54 @@
         </div>
 
         {{-- Ini bagian penting untuk navigasi halaman --}}
-        @if ($users && $users->hasPages())
-        <div class="mt-8">
-            {{ $users->links() }}
-        </div>
-        @endif
+@if ($users && $users->hasPages())
+    <div class="mt-8 flex justify-center">
+        <nav class="inline-flex items-center rounded-lg shadow bg-white border border-gray-200 px-3 py-2 space-x-1">
+            {{-- Previous Page --}}
+            @if ($users->onFirstPage())
+                <span class="px-3 py-1 text-gray-300 cursor-default rounded">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </span>
+            @else
+                <a href="{{ $users->previousPageUrl() }}" class="px-3 py-1 bg-white hover:bg-gray-50 rounded transition">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                    </svg>
+                </a>
+            @endif
+
+            {{-- Page Number --}}
+            @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+                @if ($page == $users->currentPage())
+                    <span class="px-3 py-1 bg-blue-600 text-white font-semibold rounded">{{ $page }}</span>
+                @else
+                    <a href="{{ $url }}" class="px-3 py-1 bg-white text-gray-700 hover:bg-gray-50 rounded transition">{{ $page }}</a>
+                @endif
+            @endforeach
+
+            {{-- Next Page --}}
+            @if ($users->hasMorePages())
+                <a href="{{ $users->nextPageUrl() }}" class="px-3 py-1 bg-white hover:bg-gray-50 rounded transition">
+                    <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            @else
+                <span class="px-3 py-1 text-gray-300 cursor-default rounded">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                    </svg>
+                </span>
+            @endif
+        </nav>
+    </div>
+@endif
 
     </div>
 </x-home>
