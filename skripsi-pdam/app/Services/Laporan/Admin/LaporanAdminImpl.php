@@ -11,11 +11,11 @@ class LaporanAdminImpl implements LaporanAdmin
     {
         $data = Laporan_Model::with(['pelanggan' => function ($query) {
             $query->select('pengguna_id', 'nama', 'foto_profil');
-        }])->get();
+        }])->paginate(6);
 
         $teknisi = Pengguna_Model::where('peran', 'teknisi')->select('pengguna_id', 'nama')
             ->orderBy('pengguna_id', 'asc')
-            ->get();
+            ->paginate(6);
 
         return [
             'laporan' => $data,

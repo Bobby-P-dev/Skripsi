@@ -2,7 +2,6 @@
     <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
         <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
         <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-
         <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
             <form id="editLaporanForm" method="POST" action="" enctype="multipart/form-data">
                 @csrf
@@ -39,37 +38,30 @@
                     </div>
 
                     <!-- Foto Laporan -->
-                    <div class="mb-4">
+                    <<div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Foto Laporan Saat Ini</label>
-                        <!-- !!!!!! -->
-                        <!-- foto tidak terbaca -->
-                        @if($laporan->foto_url)
-                        <img id="current_foto_preview" src="" alt="Foto Laporan Saat Ini" class="mt-2 h-48 w-full object-cover border rounded-md">
-                        @else
-                        <img id="current_foto_preview" src="{{ asset('images/tirta-bg.jpeg') }}" alt="Tidak ada foto" class="mt-2 h-48 w-full object-cover border rounded-md hidden"> {{-- Atau jangan tampilkan sama sekali jika tidak ada placeholder --}}
-                        @endif
+                        <img id="current_foto_preview" src="" alt="Foto Laporan Saat Ini" class="mt-2 h-48 w-full object-cover border rounded-md hidden">
                         <input type="file" name="foto_url" id="foto_edit" class="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100">
                         <small class="text-gray-500">Kosongkan jika tidak ingin mengubah foto laporan.</small>
-                    </div>
+                </div>
+                <!-- Tombol -->
+                <div class="py-4 flex justify-end gap-3">
+                    <!-- Bagusnya pake button close yang mana ni bob, pilih dah -->
 
-                    <!-- Tombol -->
-                    <div class="py-4 flex justify-end gap-3">
-                        <!-- Bagusnya pake button close yang mana ni bob, pilih dah -->
-
-                        <!-- Button close 1 -->
-                        <!-- <button type="button" id="closeEditModalFooterBtn"
+                    <!-- Button close 1 -->
+                    <!-- <button type="button" id="closeEditModalFooterBtn"
                         class="px-4 py-2 bg-white text-gray-700 border border-gray-300 rounded-md shadow-sm hover:bg-gray-100">
                         Batal
                     </button> -->
 
-                        <!-- Button close 2 -->
-                        <button type="button" id="closeEditModalFooterBtn" class="absolute top-0 right-3 text-gray-400 hover:text-gray-700 text-4xl">&times;</button>
+                    <!-- Button close 2 -->
+                    <button type="button" id="closeEditModalFooterBtn" class="absolute top-0 right-3 text-gray-400 hover:text-gray-700 text-4xl">&times;</button>
 
-                        <button type="submit"
-                            class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Simpan Perubahan
-                        </button>
-                    </div>
+                    <button type="submit"
+                        class="px-4 py-2 bg-indigo-600 text-white rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Simpan Perubahan
+                    </button>
+                </div>
             </form>
         </div>
     </div>

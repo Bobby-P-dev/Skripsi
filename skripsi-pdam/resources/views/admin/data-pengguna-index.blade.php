@@ -2,7 +2,12 @@
 
 <x-home>
     <div class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold text-gray-800 mb-6">Daftar Pengguna</h1>
+        <div class="flex justify-between py-4">
+            <h1 class="text-3xl font-bold text-gray-800 mb-6">Daftar Pengguna</h1>
+            <button id="openBtn" class="rounded-full bg-blue-600" type="submit">
+                Create Akun
+            </button>
+        </div>
 
         <div class="bg-white shadow-md rounded-lg overflow-hidden">
             <table class="min-w-full divide-y divide-gray-200">
@@ -92,54 +97,107 @@
         </div>
 
         {{-- Ini bagian penting untuk navigasi halaman --}}
-@if ($users && $users->hasPages())
-    <div class="mt-8 flex justify-center">
-        <nav class="inline-flex items-center rounded-lg shadow bg-white border border-gray-200 px-3 py-2 space-x-1">
-            {{-- Previous Page --}}
-            @if ($users->onFirstPage())
+        @if ($users && $users->hasPages())
+        <div class="mt-8 flex justify-center">
+            <nav class="inline-flex items-center rounded-lg shadow bg-white border border-gray-200 px-3 py-2 space-x-1">
+                {{-- Previous Page --}}
+                @if ($users->onFirstPage())
                 <span class="px-3 py-1 text-gray-300 cursor-default rounded">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
                 </span>
-            @else
+                @else
                 <a href="{{ $users->previousPageUrl() }}" class="px-3 py-1 bg-white hover:bg-gray-50 rounded transition">
                     <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
                 </a>
-            @endif
-
-            {{-- Page Number --}}
-            @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
-                @if ($page == $users->currentPage())
-                    <span class="px-3 py-1 bg-blue-600 text-white font-semibold rounded">{{ $page }}</span>
-                @else
-                    <a href="{{ $url }}" class="px-3 py-1 bg-white text-gray-700 hover:bg-gray-50 rounded transition">{{ $page }}</a>
                 @endif
-            @endforeach
 
-            {{-- Next Page --}}
-            @if ($users->hasMorePages())
+                {{-- Page Number --}}
+                @foreach ($users->getUrlRange(1, $users->lastPage()) as $page => $url)
+                @if ($page == $users->currentPage())
+                <span class="px-3 py-1 bg-blue-600 text-white font-semibold rounded">{{ $page }}</span>
+                @else
+                <a href="{{ $url }}" class="px-3 py-1 bg-white text-gray-700 hover:bg-gray-50 rounded transition">{{ $page }}</a>
+                @endif
+                @endforeach
+
+                {{-- Next Page --}}
+                @if ($users->hasMorePages())
                 <a href="{{ $users->nextPageUrl() }}" class="px-3 py-1 bg-white hover:bg-gray-50 rounded transition">
                     <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                 </a>
-            @else
+                @else
                 <span class="px-3 py-1 text-gray-300 cursor-default rounded">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
                         viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                 </span>
-            @endif
-        </nav>
-    </div>
-@endif
+                @endif
+            </nav>
+        </div>
+        @endif
 
     </div>
 </x-home>
+
+@include('auth.register')
+<!-- script untuk modal create, edit delete dll -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mata-mata #1: Apakah script ini berjalan?
+        console.log('Script modal dimulai...');
+
+        const openBtn = document.getElementById('openBtn');
+        const modalCreate = document.getElementById('createModal');
+        const closeBtn = document.getElementById('closeBtn');
+
+        // Mata-mata #2: Apakah elemen-elemennya ditemukan?
+        console.log('Elemen openBtn:', openBtn);
+        console.log('Elemen modalCreate:', modalCreate);
+        console.log('Elemen closeBtn:', closeBtn);
+
+        // Pastikan semua elemen ditemukan sebelum menambahkan event listener
+        if (openBtn && modalCreate && closeBtn) {
+
+            // Mata-mata #3: Konfirmasi bahwa kita akan memasang event listener
+            console.log('Semua elemen ditemukan, event listener akan dipasang.');
+
+            // Event untuk membuka modal
+            openBtn.addEventListener('click', () => {
+                // Mata-mata #4: Apakah klik ini terdeteksi?
+                console.log('TOMBOL BUKA DIKLIK!');
+                modalCreate.classList.add('flex');
+                modalCreate.classList.remove('hidden');
+            });
+
+            // Event untuk menutup modal dengan tombol 'X'
+            closeBtn.addEventListener('click', () => {
+                console.log('TOMBOL TUTUP DIKLIK!');
+                modalCreate.classList.remove('flex');
+                modalCreate.classList.add('hidden');
+            });
+
+            // Event untuk menutup modal dengan klik di luar area form
+            modalCreate.addEventListener('click', (e) => {
+                if (e.target === modalCreate) {
+                    console.log('AREA LUAR DIKLIK!');
+                    modalCreate.classList.remove('flex');
+                    modalCreate.classList.add('hidden');
+                }
+            });
+
+        } else {
+            // Mata-mata #5: Jika ada elemen yang tidak ditemukan
+            console.error('SATU ATAU LEBIH ELEMEN MODAL TIDAK DITEMUKAN!');
+        }
+    });
+</script>

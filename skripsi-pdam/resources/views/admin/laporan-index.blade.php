@@ -161,7 +161,7 @@
                 </div>
             </div>
         </div>
-
+        <!-- buatkan paginate nya mas 6 -->
     </div>
 
     @include('admin.penugasan.penugasan-create')

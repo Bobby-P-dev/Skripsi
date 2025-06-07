@@ -62,9 +62,14 @@
                 </a>
             </li>
 
-            <li><a href="#" class="block px-4 py-2 rounded hover:bg-blue-50">Penugasan</a></li>
-            <li><a href="#" class="block px-4 py-2 rounded hover:bg-blue-50">Dokumentasi</a></li>
-            <li><a href="#" class="block px-4 py-2 rounded hover:bg-blue-50">Register</a></li>
+            <li>
+                <a href="{{ route('penugasan.index') }}" class="block px-4 py-2 rounded {{ request()->segment(2) == 'penugasan' ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-blue-50'}}">
+                    Penugasan
+                </a>
+            </li>
+            <li><a href=" #" class="block px-4 py-2 rounded hover:bg-blue-50">Dokumentasi</a>
+            </li>
+
             @endif
 
             <!-- role teknisi -->

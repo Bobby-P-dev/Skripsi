@@ -46,7 +46,7 @@ Route::prefix('admin')->middleware(['role.admin'])->group(function () {
     Route::get('/teknisi', [PenggunaAdminController::class, 'teknisiGetOption'])->name('teknisi.option');
 
     Route::get('/laporan/penugasan', [PenugasanAdmin::class, 'create'])->name('penugasan.show');
-    Route::get('/laporan/penugasan', [PenugasanAdminController::class, 'index'])->name('penugasan.index');
+    Route::get('/penugasan/index', [PenugasanAdminController::class, 'index'])->name('penugasan.index');
     Route::post('/laporan/penugasan/create', [PenugasanAdminController::class, 'store'])->name('penugasan.store');
 });
 

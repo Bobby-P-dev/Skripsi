@@ -21,7 +21,7 @@ class PenugasanAdminController extends Controller
     public function index()
     {
         $penugasans = $this->penugasanAdminService->index();
-        return view('admin.penugasan.index', compact('penugasans'));
+        return view('admin.penugasan.penugasan-index', compact('penugasans'));
     }
 
     public function create(string $laporan_uuid)

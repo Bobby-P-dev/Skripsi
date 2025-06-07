@@ -216,7 +216,8 @@
                             currentFotoPreviewImg.src = fotoUrl;
                             currentFotoPreviewImg.classList.remove('hidden');
                         } else {
-                            currentFotoPreviewImg.src = "{{ asset('images/tirta-bg.jpeg') }}";
+
+                            currentFotoPreviewImg.src = "";
                             currentFotoPreviewImg.classList.add('hidden');
                         }
                     }
