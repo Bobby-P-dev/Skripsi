@@ -138,6 +138,7 @@
             </div>
         @endif
     </div>
+</div>
 
         @if ($users && $users->hasPages())
             <div class="mt-8 flex justify-center">
@@ -184,5 +185,4 @@
                 </nav>
             </div>
         @endif
-</div>  
 </x-home>
