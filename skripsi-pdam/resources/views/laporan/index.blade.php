@@ -81,7 +81,7 @@
                         </button>
                         <!-- button edit -->
                         <button
-                            class="show-modal absolute bottom-3 right-3 bg-white bg-opacity-80 hover:bg-opacity-100 border border-gray-300 rounded-full p-2 shadow transition z-20 hover:scale-105 shadow-lg"
+                            class="show-modal absolute bottom-3 right-3 bg-white bg-opacity-80 hover:bg-opacity-100 border border-gray-300 rounded-full p-2 transition z-20 hover:scale-105 shadow-lg"
                             data-id="{{ $laporan->laporan_uuid }}"
                             data-judul="{{ $laporan->judul }}"
                             data-deskripsi="{{ $laporan->deskripsi }}"
