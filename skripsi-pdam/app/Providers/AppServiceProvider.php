@@ -6,6 +6,8 @@ use App\Services\Laporan\Admin\LaporanAdmin;
 use App\Services\Laporan\Admin\LaporanAdminImpl;
 use App\Services\Laporan\User\LaporanPengguna;
 use App\Services\Laporan\User\LaporanPenggunaImpl;
+use App\Services\Pengguna\Admin\PenggunaAdmin;
+use App\Services\Pengguna\Admin\PenggunaAdminImpl;
 use App\Services\Penugasan\Admin\PenugasanAdmin;
 use App\Services\Penugasan\Admin\PenugasanAdminImpl;
 use Doctrine\DBAL\Types\Type;
@@ -33,6 +35,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PenugasanAdmin::class,
             PenugasanAdminImpl::class,
+        );
+
+        $this->app->bind(
+            PenggunaAdmin::class,
+            PenggunaAdminImpl::class,
         );
     }
 

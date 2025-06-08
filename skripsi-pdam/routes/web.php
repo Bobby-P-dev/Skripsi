@@ -38,13 +38,20 @@ Route::delete('/laporan/delete/{id}', [LaporanController::class, 'delete'])->nam
 
 //admin
 Route::prefix('admin')->middleware(['role.admin'])->group(function () {
+    //pengguna
     Route::get('/data/pengguna', [PenggunaAdminController::class, 'index'])->name('data.admin');
+    Route::put('/data/pengguna/{user_id}/update', [PenggunaAdminController::class, 'EditStore'])->name('data.update');
+    Route::delete('/data/pengguna/{user_id}/delete', [PenggunaAdminController::class, 'Delet'])->name('data.delete');
+
+
+    //laporan
     Route::get('/laporan/home', [LaporanAdminController::class, 'index'])->name('laporan.admin');
     Route::get('/laporan/realtime', [LaporanController::class, 'realtime'])->name('laporan.realtime');
     Route::put('/laporan/{laporan}/tolak', [LaporanAdminController::class, 'tolakLaporan'])->name('laporan.tolak');
     Route::put('/laporan/{laporan}/konfirmasi', [LaporanAdminController::class, 'accLaporan'])->name('laporan.konfirmasi');
     Route::get('/teknisi', [PenggunaAdminController::class, 'teknisiGetOption'])->name('teknisi.option');
 
+    //penugasan
     Route::get('/laporan/penugasan', [PenugasanAdmin::class, 'create'])->name('penugasan.show');
     Route::get('/penugasan/index', [PenugasanAdminController::class, 'index'])->name('penugasan.index');
     Route::post('/laporan/penugasan/create', [PenugasanAdminController::class, 'store'])->name('penugasan.store');

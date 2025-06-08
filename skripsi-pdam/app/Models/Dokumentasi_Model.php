@@ -16,7 +16,7 @@ class Dokumentasi_Model extends Model
         'keterangan',
         'tindakan',
     ];
-
+    // -relasi penugasan
     protected $table = 'dokumentasi';
     protected $primaryKey = 'dokumentasi_id';
     const CREATED_AT = 'creation_date';
