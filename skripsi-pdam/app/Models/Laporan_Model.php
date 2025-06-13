@@ -58,4 +58,13 @@ class Laporan_Model extends Model
     {
         return $query->where('status', 'pending');
     }
+
+    public function ScopeFilteringLaporan($query, $tanggalMulai, $tanggalSelesai)
+    {
+        if ($tanggalMulai && $tanggalSelesai) {
+            return $query->whereDate('created_at', '>=', $tanggalMulai)
+                ->whereDate('created_at', '<=', $tanggalSelesai);
+        }
+        return $query;
+    }
 }

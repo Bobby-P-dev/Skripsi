@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\PenugasanAdminController;
 use App\Http\Controllers\Pelanggan\LaporanController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Admin\PenggunaAdminController;
+use App\Http\Controllers\Teknisi\DokumentasiTeknisiController;
+use App\Http\Controllers\Teknisi\PenugasanTeknisiController;
 use App\Services\Penugasan\Admin\PenugasanAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -34,7 +36,9 @@ Route::put('/laporan/update/{id}', [LaporanController::class, 'update'])->name('
 Route::get('/laporan/show/delete/{id}', [LaporanController::class, 'showDelete'])->name('laporan.delete');
 Route::delete('/laporan/delete/{id}', [LaporanController::class, 'delete'])->name('laporan.delete');
 
-
+//teknisi
+Route::post('dokumentasi/store', [DokumentasiTeknisiController::class, 'store'])->name('dokumentasi.create');
+Route::get('/penugasan/get', [PenugasanTeknisiController::class, 'getIndex'])->name('penugasan.index');
 
 //admin
 Route::prefix('admin')->middleware(['role.admin'])->group(function () {
@@ -50,6 +54,7 @@ Route::prefix('admin')->middleware(['role.admin'])->group(function () {
     Route::put('/laporan/{laporan}/tolak', [LaporanAdminController::class, 'tolakLaporan'])->name('laporan.tolak');
     Route::put('/laporan/{laporan}/konfirmasi', [LaporanAdminController::class, 'accLaporan'])->name('laporan.konfirmasi');
     Route::get('/teknisi', [PenggunaAdminController::class, 'teknisiGetOption'])->name('teknisi.option');
+    Route::get('/laporan/export', [LaporanAdminController::class, 'export'])->name('laporan.export');
 
     //penugasan
     Route::get('/laporan/penugasan', [PenugasanAdmin::class, 'create'])->name('penugasan.show');

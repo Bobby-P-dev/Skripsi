@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Dokumentasi\Teknisi\DokumentasiTeknisi;
+use App\Services\Dokumentasi\Teknisi\DokumentasiTeknisiImpl;
 use App\Services\Laporan\Admin\LaporanAdmin;
 use App\Services\Laporan\Admin\LaporanAdminImpl;
 use App\Services\Laporan\User\LaporanPengguna;
@@ -10,6 +12,8 @@ use App\Services\Pengguna\Admin\PenggunaAdmin;
 use App\Services\Pengguna\Admin\PenggunaAdminImpl;
 use App\Services\Penugasan\Admin\PenugasanAdmin;
 use App\Services\Penugasan\Admin\PenugasanAdminImpl;
+use App\Services\Penugasan\Teknisi\PenugasanTeknisi;
+use App\Services\Penugasan\Teknisi\PenugasanTeknisiImpl;
 use Doctrine\DBAL\Types\Type;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
@@ -19,6 +23,8 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
+
+
     public function register(): void
     {
         $this->app->bind(
@@ -40,6 +46,16 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             PenggunaAdmin::class,
             PenggunaAdminImpl::class,
+        );
+
+        $this->app->bind(
+            DokumentasiTeknisi::class,
+            DokumentasiTeknisiImpl::class,
+        );
+
+        $this->app->bind(
+            PenugasanTeknisi::class,
+            PenugasanTeknisiImpl::class,
         );
     }
 
