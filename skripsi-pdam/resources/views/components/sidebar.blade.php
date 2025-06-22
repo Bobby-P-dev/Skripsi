@@ -110,7 +110,7 @@
             @if (auth()->user()->peran === 'teknisi')
             <li><a href="#" class="block px-4 py-2 rounded hover:bg-blue-50">Dokumentasi</a></li>
             <li>
-                <a href="#"
+                <a href=" {{ route('penugasant.index') }}"
                     class="block px-4 py-2 rounded {{ request()->segment(1) == 'penugasan' ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-blue-50' }}">
                     Penugasan
                 </a>

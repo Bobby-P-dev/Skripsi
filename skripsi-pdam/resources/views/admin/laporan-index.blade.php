@@ -4,11 +4,33 @@
         <!-- Header -->
         <div class="flex flex-wrap justify-between items-center mb-8 gap-4">
             <h1 class="text-3xl font-bold text-gray-800">Laporan Kerusakan</h1>
+            <form action="{{ route('laporan.export') }}" method="GET" class="row g-3 align-items-end">
+
+                <div class="col-md-4">
+                    <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
+                    {{-- Input ini harus memiliki name="tanggal_mulai" --}}
+                    <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" required>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
+                    {{-- Input ini harus memiliki name="tanggal_selesai" --}}
+                    <input type="date" class="form-control" id="tanggal_selesai" name="tanggal_selesai" required>
+                </div>
+
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-success">
+                        <i class="bi bi-file-earmark-excel"></i> Export ke Excel
+                    </button>
+                </div>
+
+            </form>
             @if (auth()->user()->peran === 'pelanggan')
             <button id="openModalBtn"
                 class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow transition">
                 + Buat Laporan
             </button>
+
             @endif
         </div>
 

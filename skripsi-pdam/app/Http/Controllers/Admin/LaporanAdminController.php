@@ -6,10 +6,8 @@ use App\Exports\LaporanExport;
 use App\Http\Controllers\Controller;
 use App\Models\Laporan_Model;
 use App\Services\Laporan\Admin\LaporanAdmin;
-use App\View\Components\laporan;
 use DB;
-use Illuminate\Http\Client\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanAdminController extends Controller
