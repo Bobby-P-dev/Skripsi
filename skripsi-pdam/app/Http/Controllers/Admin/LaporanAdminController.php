@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Exports\LaporanExport;
 use App\Http\Controllers\Controller;
 use App\Models\Laporan_Model;
+use App\Models\Pengguna_Model;
 use App\Services\Laporan\Admin\LaporanAdmin;
 use DB;
 use Illuminate\Http\Request;
@@ -30,11 +31,42 @@ class LaporanAdminController extends Controller
         return Excel::download(new LaporanExport($tanggalMulai, $tanggalSelesai), $namaFile);
     }
 
+    public function indexKlusterLaporanPending()
+    {
+        // --- 1. Panggil Service untuk mendapatkan laporan yang sudah dikelompokkan ---
+        $epsilon = 0.01;
+        $minSamples = 3;
+        $hasilCluster = $this->laporanAdminService->clusterLaporanPending($epsilon, $minSamples);
+
+        // --- 2. Ambil daftar teknisi secara terpisah di Controller ---
+        $teknisi = Pengguna_Model::where('peran', 'teknisi')
+            ->select('pengguna_id', 'nama')
+            ->orderBy('nama', 'asc') // Urutkan berdasarkan nama lebih umum untuk daftar
+            ->get(); // Gunakan get() untuk mengambil semua teknisi
+
+        // --- 3. Kirim SEMUA data yang dibutuhkan ke Blade view ---
+        return view('admin.laporan.laporan-index', [
+            'clusters' => $hasilCluster['clusters'],
+            'noise' => $hasilCluster['noise'],
+            'teknisi' => $teknisi, //
+        ]);
+    }
+
     public function index()
     {
-        $laporanSaya = $this->laporanAdminService->index();
 
-        return view('admin.laporan-index', compact('laporanSaya'));
+        $laporan = $this->laporanAdminService->laporanNotPending();
+        // --- 2. Ambil daftar teknisi secara terpisah di Controller ---
+        $teknisi = Pengguna_Model::where('peran', 'teknisi')
+            ->select('pengguna_id', 'nama')
+            ->orderBy('nama', 'asc') // Urutkan berdasarkan nama lebih umum untuk daftar
+            ->get(); // Gunakan get() untuk mengambil semua teknisi
+
+        // --- 3. Kirim SEMUA data yang dibutuhkan ke Blade view ---
+        return view('admin.laporan.datalaporan-index', [
+            'laporanSaya' => $laporan,
+            'teknisi' => $teknisi, //
+        ]);
     }
 
     public function showLaporan()

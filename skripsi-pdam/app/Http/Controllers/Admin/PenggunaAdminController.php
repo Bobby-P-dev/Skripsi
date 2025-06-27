@@ -65,19 +65,12 @@ class PenggunaAdminController extends Controller
     {
         $users = Pengguna_Model::select('pengguna_id', 'nama', 'email', 'alamat', 'no_telepon', 'peran', 'foto_profil')->paginate(7);
 
-        return view('admin.data-pengguna-index', compact('users'));
+        return view('admin.pengguna.data-pengguna-index', compact('users'));
     }
 
     public function GetUserById($id)
     {
         $user = Pengguna_Model::findOrFail($id);
         return view('users.edit', compact('user'));
-    }
-
-    public function UpdateUser(ProfileUpdateRequest $request, $id)
-    {
-        $user = Pengguna_Model::findOrFail($id);
-        $user->update($request->validated());
-        return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 }

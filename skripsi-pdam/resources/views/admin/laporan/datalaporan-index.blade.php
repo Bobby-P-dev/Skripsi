@@ -25,13 +25,6 @@
                 </div>
 
             </form>
-            @if (auth()->user()->peran === 'pelanggan')
-            <button id="openModalBtn"
-                class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow transition">
-                + Buat Laporan
-            </button>
-
-            @endif
         </div>
 
         <!-- Cards Grid -->
@@ -158,37 +151,5 @@
             </div>
             @endif
         </div>
-
-        <!-- Modal -->
-        <div id="detailModal" class="fixed inset-0 z-50 hidden bg-black bg-opacity-40 flex items-center justify-center">
-            <div class="bg-white rounded-lg shadow-lg w-full max-w-lg relative">
-                <button id="closeDetailModal" class="absolute -top-2 right-1 text-gray-400 hover:text-gray-700 text-4xl">&times;</button>
-                <div class="p-6">
-                    <div class="mb-4">
-                        <img id="detailFoto" src="" alt="Foto Laporan" class="w-full h-56 object-cover rounded mb-2">
-                        <div class="flex gap-2 mb-2">
-                            <span id="detailStatus" class="px-3 py-1 rounded-full text-xs font-semibold"></span>
-                            <span id="detailUrgensi" class="px-3 py-1 rounded-full text-xs font-semibold"></span>
-                        </div>
-                    </div>
-                    <h2 id="detailJudul" class="text-xl font-bold text-gray-800 mb-2"></h2>
-                    <p id="detailDeskripsi" class="text-gray-700 mb-4"></p>
-                    <div class="flex items-center gap-2 mb-2">
-                        <img id="detailUserFoto" src="" alt="User" class="w-8 h-8 rounded-full border">
-                        <span id="detailUserName" class="text-sm text-gray-600"></span>
-                    </div>
-                    <div class="text-sm text-gray-500 mb-1">
-                        <span id="detailLokasi"></span> • <span id="detailTanggal"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- buatkan paginate nya mas 6 -->
     </div>
-
-    @include('admin.penugasan.penugasan-create')
-    @include('laporan.preview-image')
-    @include('laporan.create')
-    @include('admin.partials.laporan-js')
-
 </x-home>

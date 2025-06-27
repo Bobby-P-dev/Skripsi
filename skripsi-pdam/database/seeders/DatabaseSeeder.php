@@ -16,10 +16,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Penugasan_Model::factory()->count(1)->create();
+        // Penugasan_Model::factory()->count(1)->create();
         // $pelanggan = Pengguna_Model::where('peran', 'penlanggan')->first();
         // $admin = Pengguna_Model::where('peran', 'admin')->first();
-        // Pengguna_Model::factory(10)->create();
+        Pengguna_Model::factory(10)->create();
         // Laporan_Model::factory()->create([
         //     'pelanggan_id' => 7,
         //     'admin_id' => 3,

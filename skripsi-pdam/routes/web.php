@@ -47,9 +47,9 @@ Route::prefix('admin')->middleware(['role.admin'])->group(function () {
     Route::put('/data/pengguna/{user_id}/update', [PenggunaAdminController::class, 'EditStore'])->name('data.update');
     Route::delete('/data/pengguna/{user_id}/delete', [PenggunaAdminController::class, 'Delet'])->name('data.delete');
 
-
     //laporan
-    Route::get('/laporan/home', [LaporanAdminController::class, 'index'])->name('laporan.admin');
+    Route::get('/laporan/pengaduan', [LaporanAdminController::class, 'indexKlusterLaporanPending'])->name('laporan.admin');
+    Route::get('/laporan/index', [LaporanAdminController::class, 'index'])->name('alllaporan.index');
     Route::get('/laporan/realtime', [LaporanController::class, 'realtime'])->name('laporan.realtime');
     Route::put('/laporan/{laporan}/tolak', [LaporanAdminController::class, 'tolakLaporan'])->name('laporan.tolak');
     Route::put('/laporan/{laporan}/konfirmasi', [LaporanAdminController::class, 'accLaporan'])->name('laporan.konfirmasi');

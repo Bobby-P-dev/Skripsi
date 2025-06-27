@@ -12,8 +12,9 @@ class PenggunaAdminImpl implements PenggunaAdmin
         $pengguna = Pengguna_Model::where('pengguna_id', $penggguna_id)->first();
         if ($pengguna) {
             $pengguna->update($data);
+            return $pengguna->fresh();
         }
-        return $pengguna->fresh();
+        return null;
     }
 
     public function DeletePengguna(int $pengguna_id)
@@ -23,6 +24,7 @@ class PenggunaAdminImpl implements PenggunaAdmin
 
             return $pengguna->delete();
         } catch (ModelNotFoundException $e) {
+            // Handle the case where the pengguna is not found
 
             return false;
         }

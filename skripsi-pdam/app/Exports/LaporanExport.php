@@ -40,7 +40,7 @@ class LaporanExport implements FromQuery, WithHeadings, WithMapping, WithStyles,
     public function headings(): array
     {
         return [
-            'ID Laporan',
+            'UUID Laporan',
             'Judul',
             'Pelanggan',
             'Admin Penanggung Jawab',

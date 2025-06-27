@@ -85,23 +85,54 @@
                     Dashboard
                 </a>
             </li>
-
-            <!-- role admin -->
             @if (auth()->user()->peran === 'admin')
-            <li>
-                <a href="{{ route('laporan.admin') }}"
-                    class="block px-4 py-2 rounded {{ request()->segment(2) == 'laporan' ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-blue-50' }}">
-                    Laporan
-                </a>
+
+
+            <!-- admin -->
+            {{-- 1. DROPDOWN UNTUK LAPORAN --}}
+            {{-- Kita beri id dan data-is-active untuk 'ditangkap' oleh JS --}}
+            <li id="laporan-dropdown-container" data-is-active="{{ request()->is('admin/laporan*') ? 'true' : 'false' }}">
+
+                {{-- Tombol trigger diberi id 'laporan-dropdown-btn' --}}
+                <button id="laporan-dropdown-btn"
+                    class="w-full flex justify-between items-center px-4 py-2 rounded text-left {{ request()->is('admin/laporan*') ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-blue-50' }}">
+                    <span>Laporan</span>
+
+                    {{-- Ikon panah diberi id 'laporan-dropdown-icon' --}}
+                    <svg id="laporan-dropdown-icon" class="w-4 h-4 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+
+                {{-- Panel dropdown diberi id 'laporan-dropdown-panel' dan class 'hidden' secara default --}}
+                <div id="laporan-dropdown-panel" class="hidden mt-1 pl-4">
+                    <ul class="space-y-1">
+                        <li>
+                            <a href="{{ route('laporan.admin') }}"
+                                class="block px-4 py-2 rounded text-sm {{ request()->routeIs('laporan.admin') ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-blue-50' }}">
+                                Laporan Pending
+                            </a>
+                        </li>
+                        <li>
+                            <a href=" {{ route( 'alllaporan.index') }}"
+                                class="block px-4 py-2 rounded text-sm {{ request()->routeIs('alllaporan.index') ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-blue-50' }}">
+                                Semua Data Laporan
+                            </a>
+                        </li>
+                    </ul>
+                </div>
             </li>
+
+            {{-- Menu lain tidak perlu diubah --}}
             <li>
-                <a href="{{ route('data.admin') }}"
-                    class="block px-4 py-2 rounded {{ request()->segment(2) == 'data' ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-blue-50' }}">
+                <a href="{{ route('data.admin') }}" class="block px-4 py-2 rounded {{ request()->is('admin/data*') ? 'bg-blue-100 text-blue-700 font-semibold' : 'hover:bg-blue-50' }}">
                     Data Pengguna
                 </a>
             </li>
-
-            <li><a href=" #" class="block px-4 py-2 rounded hover:bg-blue-50">Dokumentasi</a>
+            <li>
+                <a href="#" class="block px-4 py-2 rounded hover:bg-blue-50">
+                    Dokumentasi
+                </a>
             </li>
 
             @endif
@@ -143,5 +174,36 @@
 
     closeSidebar.addEventListener('click', () => {
         sidebar.classList.add('-translate-x-full');
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // 1. Tangkap semua elemen yang kita butuhkan berdasarkan ID-nya
+        const dropdownContainer = document.getElementById('laporan-dropdown-container');
+        const dropdownButton = document.getElementById('laporan-dropdown-btn');
+        const dropdownPanel = document.getElementById('laporan-dropdown-panel');
+        const dropdownIcon = document.getElementById('laporan-dropdown-icon');
+
+        // Periksa apakah elemen-elemen tersebut ada di halaman ini untuk menghindari error
+        if (dropdownButton && dropdownPanel && dropdownIcon && dropdownContainer) {
+
+            // 2. Cek status awal (apakah harus terbuka saat halaman dimuat?)
+            // Kita membaca atribut 'data-is-active' yang kita set di Blade
+            const isActive = dropdownContainer.dataset.isActive === 'true';
+            if (isActive) {
+                // Jika aktif, tampilkan panel dan putar ikonnya
+                dropdownPanel.classList.remove('hidden');
+                dropdownIcon.classList.add('rotate-180');
+            }
+
+            // 3. Tambahkan event 'click' pada tombol
+            dropdownButton.addEventListener('click', function() {
+                // Toggle (tambah/hapus) class 'hidden' pada panel
+                dropdownPanel.classList.toggle('hidden');
+
+                // Toggle (tambah/hapus) class 'rotate-180' pada ikon
+                dropdownIcon.classList.toggle('rotate-180');
+            });
+        }
     });
 </script>

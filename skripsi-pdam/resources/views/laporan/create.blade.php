@@ -63,13 +63,13 @@
                     <label for="latitude" class="block text-xs font-medium text-gray-600">Latitude:</label>
                     <input type="text" id="latitude" name="latitude" value="{{ old('latitude') }}"
                         class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-indigo-500 focus:outline-none"
-                        required readonly>
+                        required>
                 </div>
                 <div class="mt-2">
                     <label for="longitude" class="block text-xs font-medium text-gray-600">Longitude:</label>
                     <input type="text" id="longitude" name="longitude" value="{{ old('longitude') }}"
                         class="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-1 focus:ring-indigo-500 focus:outline-none"
-                        required readonly>
+                        required>
                 </div>
                 <button type="button" id="tombolGunakanLokasi"
                     class="mt-3 w-full inline-flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-4 py-2 rounded-lg text-sm transition duration-200 shadow-sm">
