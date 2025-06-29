@@ -30,11 +30,25 @@ class LaporanAdminController extends Controller
         return Excel::download(new LaporanExport($tanggalMulai, $tanggalSelesai), $namaFile);
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $laporanSaya = $this->laporanAdminService->index();
+        $status = $request->query('status'); // dari select status
+        $tanggalMulai = $request->query('tanggal_mulai'); // dari input date
+        $tanggalSelesai = $request->query('tanggal_selesai');
 
-        return view('admin.laporan-index', compact('laporanSaya'));
+        $query = Laporan_Model::with('pelanggan');
+
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        $query->filterBerdasarkanTanggal($tanggalMulai, $tanggalSelesai);
+
+        $laporanSaya = [
+            'laporan' => $query->latest()->paginate(6),
+        ];
+
+        return view('admin.laporan-index', compact('laporanSaya', 'status', 'tanggalMulai', 'tanggalSelesai'));
     }
 
     public function showLaporan()

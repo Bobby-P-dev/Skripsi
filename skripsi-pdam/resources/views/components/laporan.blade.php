@@ -1,5 +1,7 @@
 <x-home>
     <div class="container mx-auto px-4 py-8">
+                        <h1 class="text-3xl font-bold text-gray-800 mb-8">Dashboard</h1>
+
         <div class="flex flex-wrap justify-between items-center mb-8 gap-4">
             <button class="inline-flex items-center gap-2 rounded-lg bg-indigo-600 text-white px-4 py-2 font-semibold shadow hover:bg-indigo-700 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

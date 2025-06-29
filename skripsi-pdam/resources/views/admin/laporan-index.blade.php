@@ -3,28 +3,69 @@
 
         <!-- Header -->
         <div class="flex flex-wrap justify-between items-center mb-8 gap-4">
-            <h1 class="text-3xl font-bold text-gray-800">Laporan Kerusakan</h1>
-            <form action="{{ route('laporan.export') }}" method="GET" class="row g-3 align-items-end">
+            <div class="flex flex-col gap-3">
+                <h1 class="text-3xl font-bold text-gray-800">Laporan Kerusakan</h1>
+                
+                <!-- Filter -->
+                <form method="GET" action="{{ route('laporan.admin') }}" class="flex flex-col sm:flex-row items-center gap-4 bg-white p-4 rounded-xl shadow-md border border-gray-100 max-w-2xl">
+                    <div class="flex-grow w-full">
+                        <label for="status" class="sr-only">Filter Berdasarkan Status</label>
+                            <div class="relative">
+                                <select id="status" name="status"
+                                    class="block w-full appearance-none bg-gray-50 border border-gray-200 rounded-lg py-2 pl-4 pr-10 text-base text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400 sm:text-sm transition duration-200 ease-in-out cursor-pointer">
+                                    <option value="">Semua Status</option>
+                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="diterima" {{ request('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
+                                    <option value="proses" {{ request('status') == 'proses' ? 'selected' : '' }}>Proses</option>
+                                    <option value="selesai" {{ request('status') == 'selesai' ? 'selected' : '' }}>Selesai</option>
+                                    <option value="ditolak" {{ request('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
+                                </select>
+                                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                                    <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0 w-full sm:w-auto">
+                            <button type="submit"
+                            class="w-full inline-flex items-center justify-center px-3 py-1 gap-2 rounded-md bg-blue-50 text-blue-700 font-semibold shadow hover:bg-blue-100 transition">
+                            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V19l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                            </svg>
+                            Terapkan Filter
+                        </button>
+                    </div>
+                </form>
+            </div>
 
-                <div class="col-md-4">
-                    <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
-                    {{-- Input ini harus memiliki name="tanggal_mulai" --}}
-                    <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" required>
+            <!-- Export Excel -->
+            <form action="{{ route('laporan.export') }}" method="GET"
+                class="flex flex-wrap items-center gap-4 bg-white p-4 rounded-xl shadow-md border border-gray-100">
+
+                <div class="flex flex-col">
+                    <label for="tanggal_mulai" class="text-sm font-medium text-gray-700 mb-1">Tanggal Mulai</label>
+                    <input type="date" id="tanggal_mulai" name="tanggal_mulai"
+                        class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        required>
                 </div>
 
-                <div class="col-md-4">
-                    <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
-                    {{-- Input ini harus memiliki name="tanggal_selesai" --}}
-                    <input type="date" class="form-control" id="tanggal_selesai" name="tanggal_selesai" required>
+                <div class="flex flex-col">
+                    <label for="tanggal_selesai" class="text-sm font-medium text-gray-700 mb-1">Tanggal Selesai</label>
+                    <input type="date" id="tanggal_selesai" name="tanggal_selesai"
+                        class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                        required>
                 </div>
 
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-success">
-                        <i class="bi bi-file-earmark-excel"></i> Export ke Excel
+                <div class="flex">
+                    <button type="submit"
+                        class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 text-blue-700 font-semibold shadow hover:bg-blue-100 transition">
+                        Export ke Excel
                     </button>
                 </div>
-
             </form>
+
+            <!-- Tambah Laporan -->
             @if (auth()->user()->peran === 'pelanggan')
             <button id="openModalBtn"
                 class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-lg shadow transition">
@@ -41,7 +82,7 @@
             @if($laporanSaya['laporan'] && count($laporanSaya['laporan']) > 0)
             @foreach ($laporanSaya['laporan'] as $laporan)
             <!-- Card 1 -->
-            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col">
+            <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition-all overflow-hidden flex flex-col border">
                 <!-- Gambar -->
                 <div class="relative">
                     @if (!empty($laporan->foto_url))

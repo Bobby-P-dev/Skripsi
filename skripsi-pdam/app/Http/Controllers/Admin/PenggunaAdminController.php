@@ -50,7 +50,7 @@ class PenggunaAdminController extends Controller
         $destory = $this->dataPengguna->DeletePengguna($pengguna_id);
 
         if ($destory) {
-            return redirect()->back()->with('succes', 'data penguna berhasil di hapus');
+            return redirect()->back()->with('success', 'data penguna berhasil di hapus');
         }
         return redirect()->back()->withErrors('error', 'gagal mengahpus data');
     }
