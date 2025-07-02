@@ -96,7 +96,7 @@
         </div>
 
         <!-- noise -->
-        <div class="mt-10">
+        <div class="bg-red-50 border-l-4 border-red-500 rounded-lg p-4 mb-6 shadow-sm mt-9">
             <h2 class="text-2xl font-bold text-gray-800 border-b pb-2 mb-6">
                 <i class="fas fa-map-pin text-gray-600 mr-2"></i>Laporan Individual (Non-Prioritas)
             </h2>

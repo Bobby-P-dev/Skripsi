@@ -1,6 +1,9 @@
 <!-- tambahkan pagination -->
 
 <x-home>
+    <div class="mb-9">
+        <button class="border rounded-full p-2 bg-blue-600">Buat Pengguna</button>
+    </div>
     <div class="md:shadow-md md:rounded-lg overflow-x-auto px-4 py-4 md:px-0 md:py-0">
 
         <!-- TABEL: hanya tampil di desktop -->

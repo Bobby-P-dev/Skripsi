@@ -4,26 +4,33 @@
         <!-- Header -->
         <div class="flex flex-wrap justify-between items-center mb-8 gap-4">
             <h1 class="text-3xl font-bold text-gray-800">Laporan Kerusakan</h1>
-            <form action="{{ route('laporan.export') }}" method="GET" class="row g-3 align-items-end">
 
-                <div class="col-md-4">
-                    <label for="tanggal_mulai" class="form-label">Tanggal Mulai</label>
-                    {{-- Input ini harus memiliki name="tanggal_mulai" --}}
-                    <input type="date" class="form-control" id="tanggal_mulai" name="tanggal_mulai" required>
+            <form action="{{ route('laporan.export') }}" method="GET">
+                @csrf <div class="bg-white p-4 mb-4 rounded-lg border shadow-sm flex flex-col md:flex-row items-end gap-4">
+
+                    <div class="w-full md:flex-1">
+                        <label for="tanggal_mulai" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Mulai</label>
+                        <input type="date" name="tanggal_mulai" id="tanggal_mulai" required
+                            class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+
+                    <div class="w-full md:flex-1">
+                        <label for="tanggal_selesai" class="block text-sm font-medium text-gray-700 mb-1">Tanggal Selesai</label>
+                        <input type="date" name="tanggal_selesai" id="tanggal_selesai" required
+                            class="block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                    </div>
+
+                    <div class="w-full md:w-auto">
+                        <button type="submit"
+                            class="inline-flex w-full md:w-auto items-center justify-center px-4 py-2 bg-blue-600 text-white font-semibold text-sm rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                            <svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m.75 12l3 3m0 0l3-3m-3 3v-6m-1.5-9H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                            </svg>
+                            Export ke Excel
+                        </button>
+                    </div>
+
                 </div>
-
-                <div class="col-md-4">
-                    <label for="tanggal_selesai" class="form-label">Tanggal Selesai</label>
-                    {{-- Input ini harus memiliki name="tanggal_selesai" --}}
-                    <input type="date" class="form-control" id="tanggal_selesai" name="tanggal_selesai" required>
-                </div>
-
-                <div class="col-md-4">
-                    <button type="submit" class="btn btn-success">
-                        <i class="bi bi-file-earmark-excel"></i> Export ke Excel
-                    </button>
-                </div>
-
             </form>
         </div>
 
@@ -151,5 +158,12 @@
             </div>
             @endif
         </div>
+
+        <div class="mt-8 w-full">
+            {{ $laporanSaya['laporan']->links() }}
+        </div>
     </div>
+
+    @include('laporan.preview-image')
+    @include('admin.partials.laporan-js')
 </x-home>

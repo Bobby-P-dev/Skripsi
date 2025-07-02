@@ -1,6 +1,6 @@
 <?php
 
-
+use App\Http\Controllers\Admin\DokumentasiAdminController;
 use App\Http\Controllers\Admin\LaporanAdminController;
 use App\Http\Controllers\Admin\LaporanTestController;
 use App\Http\Controllers\Admin\PenugasanAdminController;
@@ -60,6 +60,9 @@ Route::prefix('admin')->middleware(['role.admin'])->group(function () {
     Route::get('/laporan/penugasan', [PenugasanAdmin::class, 'create'])->name('penugasan.show');
     Route::get('/penugasan/index', [PenugasanAdminController::class, 'index'])->name('penugasan.index');
     Route::post('/laporan/penugasan/create', [PenugasanAdminController::class, 'store'])->name('penugasan.store');
+
+    //dokumentasi
+    Route::get('/dokumentasi', [DokumentasiAdminController::class, 'index'])->name('dokumentasi.index');
 });
 
 // Route::get('/laporan/home/admin', [LaporanAdminController::class, 'index'])->name('laporan.admin');

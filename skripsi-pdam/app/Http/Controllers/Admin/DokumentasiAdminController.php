@@ -3,4 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 
-class DokumentasiAdminController {}
+class DokumentasiAdminController
+{
+    public function index()
+    {
+        return view('admin.dokumentasi.dokumentasi-index');
+    }
+}
