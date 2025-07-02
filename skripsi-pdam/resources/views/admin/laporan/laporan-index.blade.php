@@ -161,7 +161,7 @@
                                     <button type="submit" class="inline-flex items-center gap-1 rounded-lg border border-green-500 bg-green-50 text-green-600 hover:bg-green-100 px-4 py-1.5 text-sm font-semibold transition">Konfirmasi</button>
                                 </form>
                                 @elseif ($laporans->status === 'diterima')
-                                <button type="button" class="open-penugasan-modal-btn inline-flex items-center gap-1 rounded-lg border border-blue-500 bg-blue-50 text-blue-600 hover:bg-blue-100 px-4 py-1.5 text-sm font-semibold transition" data-laporan-uuid="{{ $laporan->laporan_uuid }}">Buat Penugasan</button>
+                                <button type="button" class="open-penugasan-modal-btn inline-flex items-center gap-1 rounded-lg border border-blue-500 bg-blue-50 text-blue-600 hover:bg-blue-100 px-4 py-1.5 text-sm font-semibold transition" data-laporan-uuid="{{ $laporans->laporan_uuid }}">Buat Penugasan</button>
                                 @elseif ($laporans->status === 'ditolak')
                                 @endif
                             </div>

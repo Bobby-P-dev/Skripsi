@@ -92,7 +92,7 @@
                 </form>
             </div>
             <div class="w-full h-40 flex items-center justify-center text-gray-400">
-                <span>Bisa di isi grafik crypto ni bob</span>
+                <span></span>
             </div>
         </div>
 
