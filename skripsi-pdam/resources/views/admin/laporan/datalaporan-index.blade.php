@@ -88,7 +88,7 @@
                     </div>
                     <div class="mt-3 flex justify-between items-center">
                         <button
-                            class="inline-flex items-center gap-1 text-sm text-indigo-600 font-semibold hover:underline transition detail-btn"
+                            class="inline-flex items-center gap-1 text-sm text-indigo-600 font-semibold hover:underline transition detail-data-laporan-btn"
                             data-id="{{ $laporan->id }}"
                             data-foto="{{ $laporan->foto_url ?: asset('images/tirta.png') }}"
                             data-status="{{ $laporan->status }}"
