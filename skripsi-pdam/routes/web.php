@@ -37,8 +37,9 @@ Route::get('/laporan/show/delete/{id}', [LaporanController::class, 'showDelete']
 Route::delete('/laporan/delete/{id}', [LaporanController::class, 'delete'])->name('laporan.delete');
 
 //teknisi
+Route::get('dokumentasi/index', [DokumentasiTeknisiController::class, 'index'])->name('dokumentasi.teknisi.index');
 Route::post('dokumentasi/store', [DokumentasiTeknisiController::class, 'store'])->name('dokumentasi.create');
-Route::get('/penugasan/get', [PenugasanTeknisiController::class, 'getIndex'])->name('penugasant.index');
+Route::get('/penugasan/index', [PenugasanTeknisiController::class, 'getIndex'])->name('penugasant.index');
 
 //admin
 Route::prefix('admin')->middleware(['role.admin'])->group(function () {

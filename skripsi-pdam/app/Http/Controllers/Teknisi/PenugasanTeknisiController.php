@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Teknisi;
 
+use App\Services\Dokumentasi\Teknisi\DokumentasiTeknisi;
 use App\Services\Penugasan\Teknisi\PenugasanTeknisi;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
@@ -12,22 +13,15 @@ class PenugasanTeknisiController
 
     protected $penugasanTeknisi;
 
-    public function __construct(PenugasanTeknisi $penugasanTeknisi)
+    public function __construct(DokumentasiTeknisi $penugasanTeknisi)
     {
         $this->penugasanTeknisi = $penugasanTeknisi;
     }
 
     public function getIndex()
     {
-        $teknisi_id = Auth::id();
-        try {
-            $data = $this->penugasanTeknisi->GetIndex($teknisi_id);
-            return view('teknisi.index-dokumentasi', compact('data'));
-        } catch (ModelNotFoundException $e) {
-            abort(404, "data tidak di temukan");
-        } catch (\Exception $e) {
-            Log::error('Gagal mengambil data' . $e->getMessage());
-            return redirect()->back()->withErrors("internal server error");
-        }
+
+        $data = $this->penugasanTeknisi->GetPenugasanIndex();
+        return view('teknisi.index-penugasan', compact('data'));
     }
 }

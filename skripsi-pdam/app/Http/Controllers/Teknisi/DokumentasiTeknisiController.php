@@ -17,6 +17,11 @@ class DokumentasiTeknisiController
         $this->dokumentasiService = $dokumentasiService;
     }
 
+    public function index()
+    {
+        $data = $this->dokumentasiService->GetDokumentasiIndex(auth()->id());
+        return view('teknisi.index-dokumentasi', compact('data'));
+    }
     public function store(DokumentasiCreateRequest $request)
     {
         try {

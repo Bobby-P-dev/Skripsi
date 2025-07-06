@@ -30,10 +30,6 @@ class LaporanAdminImpl implements LaporanAdmin
             $koordinat = [(float) $laporan->latitude, (float) $laporan->longitude];
             $key = $laporan->latitude . ',' . $laporan->longitude;
 
-            // ===================================================================
-            //                      PERBAIKAN KUNCI DI SINI
-            // ===================================================================
-            // Hapus kondisi 'if'. Masukkan SEMUA koordinat ke dalam $samples.
             // Algoritma perlu tahu ada 4 titik di lokasi yang sama untuk menghitung kepadatan.
             $samples[] = $koordinat;
 
@@ -45,12 +41,12 @@ class LaporanAdminImpl implements LaporanAdmin
         $dbscan = new DBSCAN($epsilon, $minSamples);
         $hasilClusterKoordinat = $dbscan->cluster($samples);
 
-        // --- BAGIAN 3: PROSES HASIL (Tetap sama seperti sebelumnya, sekarang akan bekerja benar) ---
+        // --- BAGIAN 3: PROSES HASIL
         $laporanPerCluster = [];
 
         foreach ($hasilClusterKoordinat as $clusterKoordinat) {
             $laporanDiClusterIni = [];
-            // Kita hanya perlu mengambil kunci unik dari koordinat cluster untuk peta kita
+            // mengambil kunci unik dari koordinat cluster untuk peta kita
             $uniqueKeysInCluster = [];
             foreach ($clusterKoordinat as $koordinat) {
                 $uniqueKeysInCluster[$koordinat[0] . ',' . $koordinat[1]] = true;

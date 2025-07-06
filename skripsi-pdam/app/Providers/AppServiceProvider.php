@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Services\Dokumentasi\Admin\DokumentasiAdmin;
+use App\Services\Dokumentasi\Admin\DokumentasiAdminImpl;
 use App\Services\Dokumentasi\Teknisi\DokumentasiTeknisi;
 use App\Services\Dokumentasi\Teknisi\DokumentasiTeknisiImpl;
 use App\Services\Laporan\Admin\LaporanAdmin;
@@ -54,8 +56,8 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
-            PenugasanTeknisi::class,
-            PenugasanTeknisiImpl::class,
+            DokumentasiAdmin::class,
+            DokumentasiAdminImpl::class,
         );
     }
 
