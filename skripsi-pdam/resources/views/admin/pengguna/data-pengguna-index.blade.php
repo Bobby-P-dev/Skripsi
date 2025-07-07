@@ -57,18 +57,18 @@
                         </td>
                         <td class="py-3 px-4 flex flex-wrap gap-2">
                             <button type="button"
-    class="flex items-center gap-1 px-3 py-1 rounded-md bg-blue-50 text-blue-700 font-semibold text-sm hover:bg-blue-100 transition editBtn"
-    data-id="{{ $user->pengguna_id }}"
-    data-nama="{{ $user->nama }}"
-    data-email="{{ $user->email }}"
-    data-telepon="{{ $user->no_telepon }}"
-    data-alamat="{{ $user->alamat }}"
-    data-peran="{{ $user->peran }}">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-    </svg>
-    Edit
-</button>
+                                class="flex items-center gap-1 px-3 py-1 rounded-md bg-blue-50 text-blue-700 font-semibold text-sm hover:bg-blue-100 transition editBtn"
+                                data-id="{{ $user->pengguna_id }}"
+                                data-nama="{{ $user->nama }}"
+                                data-email="{{ $user->email }}"
+                                data-telepon="{{ $user->no_telepon }}"
+                                data-alamat="{{ $user->alamat }}"
+                                data-peran="{{ $user->peran }}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Edit
+                            </button>
 
                             <form action="{{ route('data.delete', $user->pengguna_id) }}" method="POST" class="inline-block"
                                 onsubmit="return confirm('Yakin ingin menghapus pengguna ini?');">
@@ -136,18 +136,18 @@
                         </div>
                         <div class="flex gap-4 mt-3">
                             <button type="button"
-    class="flex items-center gap-1 px-3 py-1 rounded-md bg-blue-50 text-blue-700 font-semibold text-sm hover:bg-blue-100 transition editBtn"
-    data-id="{{ $user->pengguna_id }}"
-    data-nama="{{ $user->nama }}"
-    data-email="{{ $user->email }}"
-    data-telepon="{{ $user->no_telepon }}"
-    data-alamat="{{ $user->alamat }}"
-    data-peran="{{ $user->peran }}">
-    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
-    </svg>
-    Edit
-</button>
+                                class="flex items-center gap-1 px-3 py-1 rounded-md bg-blue-50 text-blue-700 font-semibold text-sm hover:bg-blue-100 transition editBtn"
+                                data-id="{{ $user->pengguna_id }}"
+                                data-nama="{{ $user->nama }}"
+                                data-email="{{ $user->email }}"
+                                data-telepon="{{ $user->no_telepon }}"
+                                data-alamat="{{ $user->alamat }}"
+                                data-peran="{{ $user->peran }}">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                                </svg>
+                                Edit
+                            </button>
 
                             <a href="#" class="flex items-center gap-1 px-3 py-1 rounded-full bg-red-50 text-red-700 font-semibold text-sm hover:bg-red-100 transition">
                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
