@@ -68,9 +68,9 @@ class RegisteredUserController extends Controller
 
         $user = Pengguna_Model::create($userData);
 
-        event(new Registered($user));
-        Auth::login($user);
+        // event(new Registered($user));
+        // Auth::login($user);
 
-        return back()->with('succces', 'berhasil membuat akun');
+        return back()->with('success', 'berhasil membuat akun');
     }
 }

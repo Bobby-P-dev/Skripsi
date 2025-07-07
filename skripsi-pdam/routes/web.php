@@ -46,7 +46,8 @@ Route::prefix('admin')->middleware(['role.admin'])->group(function () {
     //pengguna
     Route::get('/data/pengguna', [PenggunaAdminController::class, 'index'])->name('data.admin');
     Route::put('/data/pengguna/{user_id}/update', [PenggunaAdminController::class, 'EditStore'])->name('data.update');
-    Route::delete('/data/pengguna/{user_id}/delete', [PenggunaAdminController::class, 'Delet'])->name('data.delete');
+    Route::delete('/data/pengguna/{user_id}/delete', [PenggunaAdminController::class, 'Delete'])->name('data.delete');
+    Route::put('/data/pengguna/{pengguna_id}/update', [PenggunaAdminController::class, 'EditStore'])->name('data.update');
 
     //laporan
     Route::get('/laporan/pengaduan', [LaporanAdminController::class, 'indexKlusterLaporanPending'])->name('laporan.admin');

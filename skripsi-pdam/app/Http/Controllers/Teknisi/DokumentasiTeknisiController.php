@@ -22,25 +22,30 @@ class DokumentasiTeknisiController
         $data = $this->dokumentasiService->GetDokumentasiIndex(auth()->id());
         return view('teknisi.index-dokumentasi', compact('data'));
     }
+
     public function store(DokumentasiCreateRequest $request)
     {
         try {
             $validateData = $request->validated();
 
-            if ($request->hasFile('foto_url')) {
-                $uploadFile = Cloudinary::upload($request->file('foto_url')->getRealPath(), [
-                    'folder' => 'laporan',
-                ])->getSecurePath();
-            }
+            // Force teknisi_id hanya dari user yang login
+            $validateData['teknisi_id'] = auth()->user()->pengguna_id;
 
-            $validateData['foto_url'] = $uploadFile;
+            if ($request->hasFile('foto_url')) {
+                $uploadFile = \CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::upload(
+                    $request->file('foto_url')->getRealPath(),
+                    ['folder' => 'laporan']
+                )->getSecurePath();
+                $validateData['foto_url'] = $uploadFile;
+            }
 
             $this->dokumentasiService->CreateDokumentasi($validateData);
 
-            return redirect()->back()->with('succes', 'berhasil membuat data');
+            return redirect()->back()->with('success', 'Berhasil membuat dokumentasi!');
         } catch (\Exception $e) {
-            Log::error('gagal menyimpan data' . $e->getMessage());
-            return redirect()->back()->withErrors("gagal menyimpan data");
+            \Log::error('gagal menyimpan dokumentasi: ' . $e->getMessage());
+            return redirect()->back()->withErrors("Gagal menyimpan dokumentasi.");
         }
     }
+    
 }
