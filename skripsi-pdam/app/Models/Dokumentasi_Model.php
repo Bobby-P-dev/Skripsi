@@ -16,12 +16,11 @@ class Dokumentasi_Model extends Model
         'keterangan',
         'tindakan',
     ];
-    // -relasi penugasan
+
     protected $table = 'dokumentasi';
     protected $primaryKey = 'dokumentasi_id';
-    const CREATED_AT = 'creation_date';
-    const UPDATED_AT = 'updated_date';
 
+    // Konstanta CREATED_AT dan UPDATED_AT dihapus karena sudah sesuai standar Laravel
 
     public function laporan()
     {

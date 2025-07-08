@@ -34,7 +34,7 @@ class DokumentasiTeknisiImpl implements DokumentasiTeknisi
         return DB::transaction(function () use ($data) {
             $dokumentasi = Dokumentasi_Model::create($data);
             $laporan = Laporan_Model::where('laporan_uuid', $dokumentasi->laporan_uuid)->firstOrFail();
-            $laporan->update(['status_laporan' => 'selesai']);
+            $laporan->update(['status' => 'selesai']);
             return $dokumentasi;
         });
     }

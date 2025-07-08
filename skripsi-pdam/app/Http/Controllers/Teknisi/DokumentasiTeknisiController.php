@@ -32,7 +32,7 @@ class DokumentasiTeknisiController
             $validateData['teknisi_id'] = auth()->user()->pengguna_id;
 
             if ($request->hasFile('foto_url')) {
-                $uploadFile = \CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary::upload(
+                $uploadFile = Cloudinary::upload(
                     $request->file('foto_url')->getRealPath(),
                     ['folder' => 'laporan']
                 )->getSecurePath();
@@ -47,5 +47,4 @@ class DokumentasiTeknisiController
             return redirect()->back()->withErrors("Gagal menyimpan dokumentasi.");
         }
     }
-    
 }
