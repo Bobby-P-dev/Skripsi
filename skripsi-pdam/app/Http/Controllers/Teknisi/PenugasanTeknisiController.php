@@ -20,8 +20,11 @@ class PenugasanTeknisiController
 
     public function getIndex()
     {
+        $data = $this->penugasanTeknisi->GetPenugasanIndex()
+            ->filter(function ($item) {
+                return optional($item->laporan)->status !== 'selesai';
+            });
 
-        $data = $this->penugasanTeknisi->GetPenugasanIndex();
         return view('teknisi.index-penugasan', compact('data'));
-    }
+            }
 }

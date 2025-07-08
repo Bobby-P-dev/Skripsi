@@ -1,5 +1,5 @@
 <x-home>
-    <div class="container mx-auto px-4 py-4">
+    <div class="container mx-auto p-6">
 
         <!-- Header -->
         <div class="flex flex-wrap justify-between items-center mb-8 gap-4">

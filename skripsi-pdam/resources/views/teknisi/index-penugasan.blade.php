@@ -1,5 +1,5 @@
 <x-home>
-    <div class="max-w-6xl mx-auto px-4 py-8">
+    <div class="container mx-auto p-6">
         <h1 class="text-2xl font-bold text-gray-800 mb-6">Daftar Penugasan Teknisi</h1>
 
         @if($data && count($data) > 0)
