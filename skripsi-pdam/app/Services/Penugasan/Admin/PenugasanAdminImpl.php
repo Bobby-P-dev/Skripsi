@@ -67,4 +67,9 @@ class PenugasanAdminImpl implements PenugasanAdmin
 
         return $penugasans;
     }
+
+    public function GetCountPenugasan()
+    {
+        return Penugasan_Model::count();
+    }
 }

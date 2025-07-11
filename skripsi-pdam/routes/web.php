@@ -30,12 +30,6 @@ Route::post('/laporan', [LaporanController::class, 'store'])->name('laporan.stor
 Route::get('/laporan/edit/{laporan_uuid}', [LaporanController::class, 'edit'])->name('laporan.edit');
 Route::put('/laporan/update/{laporan_uuid}', [LaporanController::class, 'update'])->name('laporan.update');
 
-//---
-Route::Get('/laporan/show/update{id}', [LaporanController::class, 'showUpdate'])->name('laporan.showUpdate');
-Route::put('/laporan/update/{id}', [LaporanController::class, 'update'])->name('laporan.update');
-Route::get('/laporan/show/delete/{id}', [LaporanController::class, 'showDelete'])->name('laporan.delete');
-Route::delete('/laporan/delete/{id}', [LaporanController::class, 'delete'])->name('laporan.delete');
-
 //teknisi
 Route::get('dokumentasi/index', [DokumentasiTeknisiController::class, 'index'])->name('dokumentasi.teknisi.index');
 Route::post('dokumentasi/store', [DokumentasiTeknisiController::class, 'store'])->name('dokumentasi.create');
@@ -45,7 +39,6 @@ Route::get('/penugasan/index', [PenugasanTeknisiController::class, 'getIndex'])-
 Route::prefix('admin')->middleware(['role.admin'])->group(function () {
     //pengguna
     Route::get('/data/pengguna', [PenggunaAdminController::class, 'index'])->name('data.admin');
-    Route::put('/data/pengguna/{user_id}/update', [PenggunaAdminController::class, 'EditStore'])->name('data.update');
     Route::delete('/data/pengguna/{user_id}/delete', [PenggunaAdminController::class, 'Delete'])->name('data.delete');
     Route::put('/data/pengguna/{pengguna_id}/update', [PenggunaAdminController::class, 'EditStore'])->name('data.update');
 
@@ -67,13 +60,10 @@ Route::prefix('admin')->middleware(['role.admin'])->group(function () {
     Route::get('/dokumentasi', [DokumentasiAdminController::class, 'index'])->name('dokumentasi.index');
 });
 
-// Route::get('/laporan/home/admin', [LaporanAdminController::class, 'index'])->name('laporan.admin');
-// Route::get('/laporan/validate/admin', [LaporanAdminController::class, 'accLaporan'])->name('laporan.show');
-// Route::post('/laporan/validate/admin', [LaporanAdminController::class, 'accLaporan'])->name('laporan.acc');
 
 //dll
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('/login');
 });
 
 Route::get('/dashboard', function () {

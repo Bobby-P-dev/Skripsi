@@ -103,4 +103,9 @@ class LaporanAdminImpl implements LaporanAdmin
             'status'   => 'ditolak',
         ]);
     }
+
+    public function GetcountLaporan()
+    {
+        return Laporan_Model::count();
+    }
 }

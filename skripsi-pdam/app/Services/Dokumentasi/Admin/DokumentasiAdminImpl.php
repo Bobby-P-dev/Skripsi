@@ -15,4 +15,9 @@ class DokumentasiAdminImpl implements DokumentasiAdmin
             ->orderBy('created_at', 'desc')
             ->get();
     }
+
+    public function GetCountDokumentasi()
+    {
+        return Dokumentasi_Model::count();
+    }
 }

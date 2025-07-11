@@ -29,4 +29,9 @@ class PenggunaAdminImpl implements PenggunaAdmin
             return false;
         }
     }
+
+    public function GetCountPengguna()
+    {
+        return Pengguna_Model::count();
+    }
 }
