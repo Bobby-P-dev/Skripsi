@@ -25,8 +25,6 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-
-
     public function register(): void
     {
         $this->app->bind(
@@ -67,7 +65,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Periksa apakah kelas Type ada untuk menghindari error jika doctrine/dbal tidak terinstall
-        // (meskipun untuk ->change() seharusnya sudah terinstall)
         if (class_exists(Type::class)) {
             try {
                 // Cek apakah tipe 'enum' sudah terdaftar
@@ -75,19 +72,16 @@ class AppServiceProvider extends ServiceProvider
                     Type::addType('enum', \Doctrine\DBAL\Types\StringType::class);
                 }
 
-                // Dapatkan platform database yang sedang digunakan
-                // $platform = DB::connection()->getDoctrineConnection()->getDatabasePlatform(); // Untuk Laravel versi < 9
-                $platform = DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform(); // Untuk Laravel 9+
+                $platform = DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform();
 
                 // Daftarkan pemetaan tipe 'enum' ke 'string' jika belum ada
-                // Ini memberitahu Doctrine untuk memperlakukan kolom 'enum' sebagai 'string'
                 if (!$platform->hasDoctrineTypeMappingFor('enum')) {
                     $platform->registerDoctrineTypeMapping('enum', 'string');
                 }
-            } catch (\Doctrine\DBAL\Exception $e) {
-                // Tangani exception jika terjadi masalah saat mendaftarkan tipe
-                // Misalnya, log error atau abaikan jika tidak kritis untuk semua environment
-                // report($e); // Uncomment untuk melaporkan error jika perlu
+            } catch (\Throwable $e) {
+                // PERBAIKAN: Menggunakan '\Throwable' untuk menangkap semua jenis error,
+                // termasuk error koneksi database, sehingga tidak membuat aplikasi crash.
+                report($e);
             }
         }
     }
