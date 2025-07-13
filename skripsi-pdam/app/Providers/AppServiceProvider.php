@@ -73,14 +73,10 @@ class AppServiceProvider extends ServiceProvider
                 }
 
                 $platform = DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform();
-
-                // Daftarkan pemetaan tipe 'enum' ke 'string' jika belum ada
                 if (!$platform->hasDoctrineTypeMappingFor('enum')) {
                     $platform->registerDoctrineTypeMapping('enum', 'string');
                 }
             } catch (\Throwable $e) {
-                // PERBAIKAN: Menggunakan '\Throwable' untuk menangkap semua jenis error,
-                // termasuk error koneksi database, sehingga tidak membuat aplikasi crash.
                 report($e);
             }
         }
