@@ -22,56 +22,23 @@ use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
     public function register(): void
     {
-        $this->app->bind(
-            LaporanPengguna::class,
-            LaporanPenggunaImpl::class,
-
-        );
-        $this->app->bind(
-            LaporanAdmin::class,
-            LaporanAdminImpl::class,
-
-        );
-
-        $this->app->bind(
-            PenugasanAdmin::class,
-            PenugasanAdminImpl::class,
-        );
-
-        $this->app->bind(
-            PenggunaAdmin::class,
-            PenggunaAdminImpl::class,
-        );
-
-        $this->app->bind(
-            DokumentasiTeknisi::class,
-            DokumentasiTeknisiImpl::class,
-        );
-
-        $this->app->bind(
-            DokumentasiAdmin::class,
-            DokumentasiAdminImpl::class,
-        );
+        $this->app->bind(LaporanPengguna::class, LaporanPenggunaImpl::class);
+        $this->app->bind(LaporanAdmin::class, LaporanAdminImpl::class);
+        $this->app->bind(PenugasanAdmin::class, PenugasanAdminImpl::class);
+        $this->app->bind(PenggunaAdmin::class, PenggunaAdminImpl::class);
+        $this->app->bind(DokumentasiTeknisi::class, DokumentasiTeknisiImpl::class);
+        $this->app->bind(DokumentasiAdmin::class, DokumentasiAdminImpl::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
-        // Periksa apakah kelas Type ada untuk menghindari error jika doctrine/dbal tidak terinstall
         if (class_exists(Type::class)) {
             try {
-                // Cek apakah tipe 'enum' sudah terdaftar
                 if (!Type::hasType('enum')) {
                     Type::addType('enum', \Doctrine\DBAL\Types\StringType::class);
                 }
-
                 $platform = DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform();
                 if (!$platform->hasDoctrineTypeMappingFor('enum')) {
                     $platform->registerDoctrineTypeMapping('enum', 'string');
