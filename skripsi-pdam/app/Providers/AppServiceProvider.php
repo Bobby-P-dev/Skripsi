@@ -44,7 +44,6 @@ class AppServiceProvider extends ServiceProvider
                     $platform->registerDoctrineTypeMapping('enum', 'string');
                 }
             } catch (\Throwable $e) {
-                // Abaikan error ini saat startup agar aplikasi tidak crash
                 report($e);
             }
         }
