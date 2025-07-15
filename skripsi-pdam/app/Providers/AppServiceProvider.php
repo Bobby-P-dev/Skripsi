@@ -14,10 +14,6 @@ use App\Services\Pengguna\Admin\PenggunaAdmin;
 use App\Services\Pengguna\Admin\PenggunaAdminImpl;
 use App\Services\Penugasan\Admin\PenugasanAdmin;
 use App\Services\Penugasan\Admin\PenugasanAdminImpl;
-use App\Services\Penugasan\Teknisi\PenugasanTeknisi;
-use App\Services\Penugasan\Teknisi\PenugasanTeknisiImpl;
-use Doctrine\DBAL\Types\Type;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -34,18 +30,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        if (class_exists(Type::class)) {
-            try {
-                if (!Type::hasType('enum')) {
-                    Type::addType('enum', \Doctrine\DBAL\Types\StringType::class);
-                }
-                $platform = DB::connection()->getDoctrineSchemaManager()->getDatabasePlatform();
-                if (!$platform->hasDoctrineTypeMappingFor('enum')) {
-                    $platform->registerDoctrineTypeMapping('enum', 'string');
-                }
-            } catch (\Throwable $e) {
-                report($e);
-            }
-        }
+        // Dikosongkan untuk stabilitas aplikasi
     }
 }
