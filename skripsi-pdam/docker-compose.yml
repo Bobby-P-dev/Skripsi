@@ -15,7 +15,7 @@ services:
       - laravel
 
   # 2. Layanan Database (PostgreSQL)
-  db:
+db:
     image: postgres:15-alpine
     container_name: laravel-db
     restart: unless-stopped
@@ -25,11 +25,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - pgdata:/var/lib/postgresql/data
-
     ports:
-      ports:
-        - "127.0.0.1:5432:5432"
-
+      - "127.0.0.1:5432:5432"
     networks:
       - laravel
 
