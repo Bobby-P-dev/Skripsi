@@ -5,12 +5,14 @@ namespace App\Services\Laporan\Admin;
 use App\Models\Laporan_Model;
 use App\Models\Pengguna_Model;
 use Phpml\Clustering\DBSCAN;
+use Rubix\ML\Datasets\Unlabeled;
 
 class LaporanAdminImpl implements LaporanAdmin
 {
     public function clusterLaporanPending(float $epsilon, int $minSamples): array
     {
-        // --- BAGIAN 1: PERSIAPAN - AMBIL DATA DAN BUAT 'PETA' ---
+        // --- BAGIAN 1: PERSIAPAN - HAMPIR TIDAK ADA PERUBAHAN ---
+
 
         $laporanAktif = Laporan_Model::with(['pelanggan' => function ($query) {
             $query->select('pengguna_id', 'nama', 'foto_profil');
@@ -20,54 +22,59 @@ class LaporanAdminImpl implements LaporanAdmin
             ->whereNotNull('longitude')
             ->get();
 
+
         if ($laporanAktif->count() < $minSamples) {
+            // Logika guard clause Anda sudah benar, tidak perlu diubah
             return ['clusters' => [], 'noise' => $laporanAktif->all()];
         }
 
+
+        // Persiapan $samples tetap sama
         $samples = [];
-        $laporanMap = [];
         foreach ($laporanAktif as $laporan) {
-            $koordinat = [(float) $laporan->latitude, (float) $laporan->longitude];
-            $key = $laporan->latitude . ',' . $laporan->longitude;
-
-            // Algoritma perlu tahu ada 4 titik di lokasi yang sama untuk menghitung kepadatan.
-            $samples[] = $koordinat;
-
-            // Logika untuk $laporanMap tetap sama untuk menangani duplikat
-            $laporanMap[$key][] = $laporan;
+            $samples[] = [(float) $laporan->latitude, (float) $laporan->longitude];
         }
 
-        // --- BAGIAN 2: EKSEKUSI ALGORITMA ---
-        $dbscan = new DBSCAN($epsilon, $minSamples);
-        $hasilClusterKoordinat = $dbscan->cluster($samples);
 
-        // --- BAGIAN 3: PROSES HASIL
-        $laporanPerCluster = [];
+        // Perubahan 1: RubixML butuh data dalam format objek Dataset
+        $dataset = Unlabeled::build($samples);
 
-        foreach ($hasilClusterKoordinat as $clusterKoordinat) {
-            $laporanDiClusterIni = [];
-            // mengambil kunci unik dari koordinat cluster untuk peta kita
-            $uniqueKeysInCluster = [];
-            foreach ($clusterKoordinat as $koordinat) {
-                $uniqueKeysInCluster[$koordinat[0] . ',' . $koordinat[1]] = true;
-            }
 
-            foreach (array_keys($uniqueKeysInCluster) as $key) {
-                if (isset($laporanMap[$key])) {
-                    $laporanDiClusterIni = array_merge($laporanDiClusterIni, $laporanMap[$key]);
-                    unset($laporanMap[$key]);
-                }
-            }
-            $laporanPerCluster[] = $laporanDiClusterIni;
-        }
+        // --- BAGIAN 2: EKSEKUSI ALGORITMA - DIGANTI DENGAN SINTAKS RUBIXML ---
 
+
+        // Ganti 'new DBSCAN(...)->cluster($samples)'
+        // menjadi 'new DBSCAN(...)->predict($dataset)'
+        $estimator = new \Rubix\ML\Clusterers\DBSCAN($epsilon, $minSamples);
+        $labels = $estimator->predict($dataset);
+
+
+        // --- BAGIAN 3: PROSES HASIL - DIPERBARUI TOTAL SESUAI OUTPUT RUBIXML ---
+
+
+        $clusters = [];
         $noise = [];
-        foreach ($laporanMap as $grupLaporanNoise) {
-            $noise = array_merge($noise, $grupLaporanNoise);
+
+
+        // Looping berdasarkan label yang dihasilkan oleh RubixML
+        foreach ($labels as $index => $label) {
+            // Ambil objek Laporan_Model yang sesuai dengan index-nya
+            $laporan = $laporanAktif[$index];
+
+
+            if ($label === -1) {
+                // Label -1 adalah noise (data pencilan)
+                $noise[] = $laporan;
+            } else {
+                // Kelompokkan laporan ke dalam cluster berdasarkan nomor labelnya
+                $clusters[$label][] = $laporan;
+            }
         }
+
 
         return [
-            'clusters' => $laporanPerCluster,
+            // array_values digunakan untuk mereset key (0, 1, 2...) menjadi array biasa
+            'clusters' => array_values($clusters),
             'noise' => $noise,
         ];
     }
