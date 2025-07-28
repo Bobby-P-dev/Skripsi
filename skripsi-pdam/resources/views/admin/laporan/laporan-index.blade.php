@@ -59,8 +59,8 @@
                                     data-urgensi="{{ $laporan->tingkat_urgensi }}"
                                     data-judul="{{ $laporan->judul }}"
                                     data-deskripsi="{{ $laporan->deskripsi }}"
-                                    data-pelangganfoto="{{ isset($laporan->pelanggan) && $laporan->pelanggan->foto_profil ? asset('storage/' . $laporan->pelanggan->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($laporan->pelanggan->nama ?? 'pelanggan') . '&background=4f46e5&color=fff&size=32' }}"
-                                    data-pelangganname="{{ $laporan->pelanggan->nama ?? 'Anonim' }}"
+                                    data-userfoto="{{ isset($laporan->pelanggan) && $laporan->pelanggan->foto_profil ? asset('storage/' . $laporan->pelanggan->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($laporan->pelanggan->nama ?? 'pelanggan') . '&background=4f46e5&color=fff&size=32' }}"
+                                    data-username="{{ $laporan->pelanggan->nama ?? 'Anonim' }}"
                                     data-lokasi="{{ $laporan->lokasi }}"
                                     data-tanggal="{{ \Carbon\Carbon::parse($laporan->created_at)->translatedFormat('d F Y H:i') }}">
                                     Lihat detail →
@@ -142,8 +142,8 @@
                                 data-urgensi="{{ $laporans->tingkat_urgensi }}"
                                 data-judul="{{ $laporans->judul }}"
                                 data-deskripsi="{{ $laporans->deskripsi }}"
-                                data-pelangganfoto="{{ isset($laporans->pelanggan) && $laporans->pelanggan->foto_profil ? asset('storage/' . $laporans->pelanggan->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($laporans->pelanggan->nama ?? 'pelanggan') . '&background=4f46e5&color=fff&size=32' }}"
-                                data-pelangganname="{{ $laporans->pelanggan->nama ?? 'Anonim' }}"
+                                data-userfoto="{{ isset($laporans->pelanggan) && $laporans->pelanggan->foto_profil ? asset('storage/' . $laporans->pelanggan->foto_profil) : 'https://ui-avatars.com/api/?name=' . urlencode($laporans->pelanggan->nama ?? 'pelanggan') . '&background=4f46e5&color=fff&size=32' }}"
+                                data-username="{{ $laporans->pelanggan->nama ?? 'Anonim' }}"
                                 data-lokasi="{{ $laporans->lokasi }}"
                                 data-tanggal="{{ \Carbon\Carbon::parse($laporans->created_at)->translatedFormat('d F Y H:i') }}">
                                 Lihat detail →
@@ -191,8 +191,8 @@
                     <h2 id="detailJudul" class="text-xl font-bold text-gray-800 mb-2"></h2>
                     <p id="detailDeskripsi" class="text-gray-700 mb-4"></p>
                     <div class="flex items-center gap-2 mb-2">
-                        <img id="detailpelangganFoto" src="" alt="pelanggan" class="w-8 h-8 rounded-full border">
-                        <span id="detailpelangganName" class="text-sm text-gray-600"></span>
+                        <img id="detailUserFoto" src="" alt="pelanggan" class="w-8 h-8 rounded-full border">
+                        <span id="detailUserName" class="text-sm text-gray-600"></span>
                     </div>
                     <div class="text-sm text-gray-500 mb-1">
                         <span id="detailLokasi"></span> • <span id="detailTanggal"></span>
